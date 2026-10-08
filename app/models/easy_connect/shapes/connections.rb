@@ -7,6 +7,10 @@ module EasyConnect
         @lines = lines
       end
 
+      def problems
+        @groups.size == 2 ? [] : [ "A connections board needs exactly two groups" ]
+      end
+
       def placement(shown)
         { "columns" => @groups.map { |group| { "name" => group, "items" => held_by(group).map { |item| item.slice(*shown) } } } }
       end

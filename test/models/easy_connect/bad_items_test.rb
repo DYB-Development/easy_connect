@@ -30,4 +30,10 @@ class EasyConnect::BadItemsTest < ActiveSupport::TestCase
 
     assert_includes error.message, "DYB-1 is in a group the board does not have"
   end
+
+  test "a connections board without exactly two groups is refused and says why" do
+    error = assert_raises(ActiveRecord::RecordInvalid) { create(groups: [ "Tickets" ]) }
+
+    assert_includes error.message, "A connections board needs exactly two groups"
+  end
 end
