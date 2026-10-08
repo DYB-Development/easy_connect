@@ -9,7 +9,11 @@ module EasyConnect
     end
 
     def connect(from, to)
-      update!(lines: lines + [ { "from" => from, "to" => to } ])
+      update!(lines: lines + [ shape.line(from, to) ])
+    end
+
+    def shape
+      Shapes::Connections.new(groups, items)
     end
 
     def columns

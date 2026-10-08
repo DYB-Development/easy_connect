@@ -14,4 +14,10 @@ class EasyConnect::BoardLinesTest < ActiveSupport::TestCase
 
     assert_equal [ { "from" => "DYB-1", "to" => "PR-7" } ], @board.reload.lines
   end
+
+  test "a line drawn from the second group to the first is kept running from the first to the second" do
+    @board.connect("PR-7", "DYB-1")
+
+    assert_equal [ { "from" => "DYB-1", "to" => "PR-7" } ], @board.reload.lines
+  end
 end
