@@ -29,4 +29,15 @@ class EasyConnect::ChangingItemsTest < ActiveSupport::TestCase
 
     assert_equal [ { "from" => "DYB-2", "to" => "PR-7" } ], @board.reload.lines
   end
+
+  test "the next result lists only the items the board now holds and the lines between them" do
+    @board.connect("DYB-1", "PR-7")
+    @board.connect("DYB-2", "PR-7")
+    @board.mark("DYB-2", done: true)
+
+    @board.remove_items([ "DYB-1" ])
+    @board.add_items([ { "id" => "PR-8", "label" => "Fix the totals", "group" => "Pull requests" } ])
+
+    assert_equal({ "shape" => "connections", "items" => %w[DYB-2 PR-7 PR-8], "lines" => [ %w[DYB-2 PR-7] ] }, JSON.parse(@board.reload.result))
+  end
 end
