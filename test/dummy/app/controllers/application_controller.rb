@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  helper Rails.application.routes.url_helpers
+
   def turn_away_the_admin
     head :forbidden
   end
