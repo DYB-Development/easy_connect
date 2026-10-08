@@ -10,6 +10,8 @@ const column = { display: "flex", flexDirection: "column", gap: 12, minWidth: 24
 
 const node = { border: "1px solid #d1d5db", borderRadius: 8, padding: "8px 14px", background: "white", cursor: "grab" }
 
+const refusal = { margin: "0 24px", padding: "8px 14px", borderRadius: 8, background: "#fef2f2", color: "#991b1b" }
+
 const linesLayer = { position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", overflow: "visible" }
 
 const useLines = (drawing, surface, nodes) => {
@@ -40,7 +42,7 @@ const useLines = (drawing, surface, nodes) => {
 
 const Board = ({ base, token, initial }) => {
   const [ drawing, setDrawing ] = useState(initial)
-  const [ , setError ] = useState(null)
+  const [ error, setError ] = useState(null)
   const surface = useRef(null)
   const nodes = useRef({})
   const placed = useLines(drawing, surface, nodes)
@@ -55,6 +57,7 @@ const Board = ({ base, token, initial }) => {
 
   return (
     <div ref={surface} style={surfaceSide}>
+      {error && <p role="alert" style={refusal}>{error}</p>}
       <div style={columnsSide}>
         {drawing.columns.map((group) => (
           <section key={group.name} style={column}>

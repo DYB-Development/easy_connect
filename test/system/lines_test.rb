@@ -17,5 +17,13 @@ module EasyConnect
 
       assert_selector "[data-line='DYB-1 PR-7']"
     end
+
+    test "a line between two items in the same group is refused with the reason and not drawn" do
+      visit easy_connect.manage_board_path(@board)
+
+      find("[data-item='DYB-1']").drag_to(find("[data-item='DYB-2']"))
+
+      assert_selector "[role='alert']", text: "Both items are in the same group."
+    end
   end
 end
