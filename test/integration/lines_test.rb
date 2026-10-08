@@ -21,5 +21,13 @@ module EasyConnect
 
       assert_equal [ 422, "Both items are in the same group." ], [ response.status, response.parsed_body["error"] ]
     end
+
+    test "an admin removes a line from a board" do
+      @board.connect("DYB-1", "PR-7")
+
+      delete easy_connect.manage_board_lines_path(@board), params: { from: "DYB-1", to: "PR-7" }, as: :json
+
+      assert_equal [], @board.reload.lines
+    end
   end
 end

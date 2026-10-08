@@ -10,6 +10,11 @@ module EasyConnect
         head :no_content
       end
 
+      def destroy
+        board.disconnect(params[:from], params[:to])
+        head :no_content
+      end
+
       private
 
       def board
