@@ -10,3 +10,9 @@ test("names each item on an ordering board that no line touches", () => {
 
   assert.deepEqual(untouched(drawing), [ "Test" ])
 })
+
+test("names nothing on a connections board", () => {
+  const drawing = { columns: [ { name: "Tickets", items: [ { id: "DYB-1", label: "Billing report" } ] } ], lines: [] }
+
+  assert.deepEqual(untouched(drawing), [])
+})
