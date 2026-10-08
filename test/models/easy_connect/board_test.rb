@@ -48,4 +48,14 @@ class EasyConnect::BoardTest < ActiveSupport::TestCase
   test "a new board has not been saved" do
     assert_not EasyConnect::Board.create!(host: "billing", title: "October", groups: [ "Tickets", "Pull requests" ], items: []).saved?
   end
+
+  test "a saved board records when it was saved" do
+    board = EasyConnect::Board.create!(host: "billing", title: "October", groups: [ "Tickets", "Pull requests" ], items: [])
+
+    freeze_time do
+      board.mark_saved!
+
+      assert_equal Time.current, board.reload.saved_at
+    end
+  end
 end

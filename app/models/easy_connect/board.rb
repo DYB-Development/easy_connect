@@ -4,6 +4,10 @@ module EasyConnect
 
     belongs_to :owner, polymorphic: true, optional: true
 
+    def mark_saved!
+      update!(saved_at: Time.current)
+    end
+
     def saved?
       saved_at.present?
     end
