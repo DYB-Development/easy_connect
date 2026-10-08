@@ -7,9 +7,16 @@ module EasyConnect
       end
 
       def line(from, to)
+        raise Refused, "That item is not on this board." unless on_board?(from) && on_board?(to)
         raise Refused, "A line cannot run from an item to itself." if from == to
 
         { "from" => from, "to" => to }
+      end
+
+      private
+
+      def on_board?(id)
+        @items.any? { |item| item["id"] == id }
       end
     end
   end

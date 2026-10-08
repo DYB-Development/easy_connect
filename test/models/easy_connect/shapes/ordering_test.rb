@@ -15,4 +15,8 @@ class EasyConnect::Shapes::OrderingTest < ActiveSupport::TestCase
   test "a line from an item to itself is refused" do
     assert_raises(EasyConnect::Refused) { @shape.line("plan", "plan") }
   end
+
+  test "a line to an item not on the board is refused" do
+    assert_raises(EasyConnect::Refused) { @shape.line("plan", "ship") }
+  end
 end
