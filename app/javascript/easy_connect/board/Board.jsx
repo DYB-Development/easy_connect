@@ -1,6 +1,7 @@
 import React, { useLayoutEffect, useRef, useState } from "react"
 import { createSender } from "./sender"
 import { between, downward } from "./lines"
+import { untouched } from "./untouched"
 
 const surfaceSide = { position: "relative" }
 
@@ -29,6 +30,8 @@ const opener = { fontSize: 13, color: "#2563eb" }
 const onTheWeb = (address) => /^https?:\/\//.test(address || "")
 
 const marker = { marginTop: 6, fontSize: 12, padding: "2px 8px", borderRadius: 6, border: "1px solid #d1d5db", background: "white", cursor: "pointer" }
+
+const asking = { margin: "0 24px", padding: "12px 14px", borderRadius: 8, background: "#fffbeb", color: "#92400e" }
 
 const refusal = { margin: "0 24px", padding: "8px 14px", borderRadius: 8, background: "#fef2f2", color: "#991b1b" }
 
@@ -69,6 +72,7 @@ const Board = ({ base, token, initial }) => {
   const surface = useRef(null)
   const nodes = useRef({})
   const [ hidingDone, setHidingDone ] = useState(false)
+  const [ leftOut, setLeftOut ] = useState([])
   const placed = useLines(drawing, surface, nodes, hidingDone)
   const shown = (held) => held.filter((item) => !(hidingDone && item.done))
 
@@ -104,10 +108,18 @@ const Board = ({ base, token, initial }) => {
   return (
     <div ref={surface} style={surfaceSide}>
       <div style={toolbar}>
-        <button type="button" style={saveButton} onClick={() => send("/save", "POST")}>Save</button>
+        <button type="button" style={saveButton} onClick={() => {
+          const missing = untouched(drawing)
+          missing.length ? setLeftOut(missing) : send("/save", "POST")
+        }}>Save</button>
         <button type="button" style={marker} onClick={() => setHidingDone(!hidingDone)}>{hidingDone ? "Show done items" : "Hide done items"}</button>
         <span data-saved>{savedWhen(drawing.saved_at)}</span>
       </div>
+      {leftOut.length > 0 && (
+        <div role="alertdialog" style={asking}>
+          <p>No line touches {leftOut.join(", ")}. Save anyway?</p>
+        </div>
+      )}
       {error && <p role="alert" style={refusal}>{error}</p>}
       {drawing.rows ? (
         <div style={rowsSide}>
