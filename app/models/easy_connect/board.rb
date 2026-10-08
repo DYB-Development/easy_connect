@@ -13,7 +13,7 @@ module EasyConnect
     end
 
     def result
-      { shape: shape, items: items.pluck("id"), lines: [] }.to_json
+      { shape: shape, items: items.pluck("id"), lines: lines.map { |line| line.values_at("from", "to") } }.to_json
     end
 
     def connect(from, to)
