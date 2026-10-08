@@ -30,4 +30,8 @@ class EasyConnect::BoardTest < ActiveSupport::TestCase
       { "name" => "Pull requests", "items" => [ { "id" => "PR-7", "label" => "Add the report page" } ] }
     ], board.columns
   end
+
+  test "a new board has no lines" do
+    assert_equal [], EasyConnect::Board.create!(host: "billing", title: "October", groups: [ "Tickets", "Pull requests" ], items: []).lines
+  end
 end
