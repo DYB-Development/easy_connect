@@ -9,13 +9,13 @@ class EasyConnect::BoardTest < ActiveSupport::TestCase
     assert_equal items, board.reload.items
   end
 
-  test "a new board's result lists its item ids and no lines" do
+  test "a new board's result names its shape and lists its item ids and no lines" do
     board = EasyConnect::Board.create!(host: "billing", title: "October", groups: [ "Tickets", "Pull requests" ], items: [
       { "id" => "DYB-1", "label" => "Billing report", "group" => "Tickets" },
       { "id" => "PR-7", "label" => "Add the report page", "group" => "Pull requests" }
     ])
 
-    assert_equal({ "items" => [ "DYB-1", "PR-7" ], "lines" => [] }, JSON.parse(board.result))
+    assert_equal({ "shape" => "connections", "items" => [ "DYB-1", "PR-7" ], "lines" => [] }, JSON.parse(board.result))
   end
 
   test "a board's columns hold each group's items in the order the host handed them in" do
