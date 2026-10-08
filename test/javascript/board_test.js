@@ -23,3 +23,11 @@ test("says a board that has not been saved is not saved yet", () => {
 test("says when a saved board was saved", () => {
   assert.match(drawn([], [], "2026-10-08T14:05:00Z"), /<span[^>]*data-saved[^>]*>Saved [^<]+<\/span>/)
 })
+
+const ordered = (rows) => renderToStaticMarkup(React.createElement(Board, { base: "/boards/1", token: "t", initial: { rows, lines: [], saved_at: null } }))
+
+test("draws an ordering board's items side by side in their rows", () => {
+  const html = ordered([ [ { id: "plan", label: "Plan" } ], [ { id: "build", label: "Build" }, { id: "ship", label: "Ship" } ] ])
+
+  assert.match(html, /<div[^>]*data-row="1"[^>]*><div[^>]*data-item="build"[^>]*>Build<\/div><div[^>]*data-item="ship"[^>]*>Ship<\/div><\/div>/)
+})
