@@ -18,5 +18,24 @@ module EasyConnect
 
       assert_selector "[role='alertdialog']", text: "Test"
     end
+
+    test "the admin goes back to drawing without saving" do
+      visit easy_connect.manage_board_path(@board)
+
+      click_on "Save"
+      click_on "Keep drawing"
+
+      assert_no_selector "[role='alertdialog']"
+      assert_selector "[data-saved]", text: "Not saved yet"
+    end
+
+    test "the admin saves anyway" do
+      visit easy_connect.manage_board_path(@board)
+
+      click_on "Save"
+      click_on "Save anyway"
+
+      assert_selector "[data-saved]", text: "Saved "
+    end
   end
 end

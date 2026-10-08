@@ -118,6 +118,10 @@ const Board = ({ base, token, initial }) => {
       {leftOut.length > 0 && (
         <div role="alertdialog" style={asking}>
           <p>No line touches {leftOut.join(", ")}. Save anyway?</p>
+          <div style={toolbar}>
+            <button type="button" style={marker} onClick={() => setLeftOut([])}>Keep drawing</button>
+            <button type="button" style={saveButton} onClick={() => { setLeftOut([]); send("/save", "POST") }}>Save anyway</button>
+          </div>
         </div>
       )}
       {error && <p role="alert" style={refusal}>{error}</p>}
