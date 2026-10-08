@@ -34,4 +34,11 @@ class EasyConnect::BoardLinesTest < ActiveSupport::TestCase
 
     assert_equal [], @board.reload.lines
   end
+
+  test "a board's result lists every line as a pair of item ids from the first group to the second" do
+    @board.connect("PR-7", "DYB-1")
+    @board.connect("DYB-2", "PR-7")
+
+    assert_equal [ [ "DYB-1", "PR-7" ], [ "DYB-2", "PR-7" ] ], JSON.parse(@board.result)["lines"]
+  end
 end

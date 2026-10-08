@@ -4,27 +4,35 @@ module EasyConnect
 
     belongs_to :owner, polymorphic: true, optional: true
 
+    def mark_saved!
+      update!(saved_at: Time.current)
+    end
+
+    def saved?
+      saved_at.present?
+    end
+
     def result
-      { items: items.pluck("id"), lines: [] }.to_json
+      { shape: shape, items: items.pluck("id"), lines: lines.map { |line| line.values_at("from", "to") } }.to_json
     end
 
     def connect(from, to)
-      line = shape.line(from, to)
+      line = shape_rules.line(from, to)
       raise Refused, "Those two items are already joined." if lines.include?(line)
 
       update!(lines: lines + [ line ])
     end
 
     def disconnect(from, to)
-      update!(lines: lines - [ shape.line(from, to) ])
+      update!(lines: lines - [ shape_rules.line(from, to) ])
     end
 
-    def shape
+    def shape_rules
       Shapes::Connections.new(groups, items)
     end
 
     def drawing
-      { "columns" => columns, "lines" => lines }
+      { "columns" => columns, "lines" => lines, "saved_at" => saved_at&.iso8601 }
     end
 
     def columns
