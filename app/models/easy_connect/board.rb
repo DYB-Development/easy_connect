@@ -6,6 +6,8 @@ module EasyConnect
 
     belongs_to :owner, polymorphic: true, optional: true
 
+    validate :items_are_sound
+
     def mark_saved!
       update!(saved_at: Time.current)
     end
@@ -50,6 +52,12 @@ module EasyConnect
 
     def drawing
       shape_rules.placement(SHOWN).merge("lines" => lines, "saved_at" => saved_at&.iso8601)
+    end
+
+    private
+
+    def items_are_sound
+      items.pluck("id").tally.select { |_id, count| count > 1 }.each_key { |id| errors.add(:items, "share the id #{id}") }
     end
   end
 end
