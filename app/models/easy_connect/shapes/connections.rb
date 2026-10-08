@@ -1,9 +1,14 @@
 module EasyConnect
   module Shapes
     class Connections
-      def initialize(groups, items)
+      def initialize(groups, items, lines = [])
         @groups = groups
         @items = items
+        @lines = lines
+      end
+
+      def placement(shown)
+        { "columns" => @groups.map { |group| { "name" => group, "items" => held_by(group).map { |item| item.slice(*shown) } } } }
       end
 
       def line(from, to)
@@ -16,6 +21,10 @@ module EasyConnect
       end
 
       private
+
+      def held_by(group)
+        @items.select { |item| item["group"] == group }
+      end
 
       def group_of(id)
         @items.find { |item| item["id"] == id }&.dig("group")
