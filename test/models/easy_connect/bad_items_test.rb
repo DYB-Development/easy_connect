@@ -24,4 +24,10 @@ class EasyConnect::BadItemsTest < ActiveSupport::TestCase
 
     assert_includes error.message, "DYB-1 has no label"
   end
+
+  test "an item whose group the board does not have is refused and named" do
+    error = assert_raises(ActiveRecord::RecordInvalid) { create(items: [ { "id" => "DYB-1", "label" => "Billing report", "group" => "Tikets" } ]) }
+
+    assert_includes error.message, "DYB-1 is in a group the board does not have"
+  end
 end
