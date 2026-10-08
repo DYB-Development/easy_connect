@@ -18,4 +18,8 @@ class EasyConnect::HostTest < ActiveSupport::TestCase
 
     assert_nil host.boards.where(owner: Account.create!).find_by(id: board.id)
   end
+
+  test "a host's admin pages use the application layout unless it names another" do
+    assert_equal "application", EasyConnect::Host.new(:billing).admin_layout
+  end
 end
