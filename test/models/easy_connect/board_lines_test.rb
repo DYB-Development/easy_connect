@@ -26,4 +26,12 @@ class EasyConnect::BoardLinesTest < ActiveSupport::TestCase
 
     assert_raises(EasyConnect::Refused) { @board.connect("PR-7", "DYB-1") }
   end
+
+  test "a line removed from either end is gone" do
+    @board.connect("DYB-1", "PR-7")
+
+    @board.disconnect("PR-7", "DYB-1")
+
+    assert_equal [], @board.reload.lines
+  end
 end

@@ -15,6 +15,10 @@ module EasyConnect
       update!(lines: lines + [ line ])
     end
 
+    def disconnect(from, to)
+      update!(lines: lines - [ shape.line(from, to) ])
+    end
+
     def shape
       Shapes::Connections.new(groups, items)
     end
