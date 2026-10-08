@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useRef, useState } from "react"
 import { createSender } from "./sender"
-import { between } from "./lines"
+import { between, downward } from "./lines"
 
 const surfaceSide = { position: "relative" }
 
@@ -39,7 +39,8 @@ const useLines = (drawing, surface, nodes) => {
         const toBox = nodes.current[line.to]?.getBoundingClientRect()
         if (!fromBox || !toBox) return []
 
-        return [ { ...line, ...between(fromBox, toBox, frame, surface.current) } ]
+        const joining = drawing.rows ? downward : between
+        return [ { ...line, ...joining(fromBox, toBox, frame, surface.current) } ]
       }))
     }
 
