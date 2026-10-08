@@ -1,8 +1,0 @@
-<% content_for :head do %>
-  <%= javascript_include_tag "keystone_ui/react", defer: true %>
-  <%= javascript_include_tag "easy_connect/board", defer: true %>
-<% end %>
-
-<h1><%= @board.title %></h1>
-
-<%= react_ui("easy_connect/board", { columns: @board.columns }) %>
