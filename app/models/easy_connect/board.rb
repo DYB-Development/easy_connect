@@ -45,9 +45,7 @@ module EasyConnect
     end
 
     def shape_rules
-      return Shapes::Ordering.new(groups, items, lines) if shape == "ordering"
-
-      Shapes::Connections.new(groups, items, lines)
+      Shapes.named(shape).new(groups, items, lines)
     end
 
     def drawing
