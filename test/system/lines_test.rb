@@ -25,5 +25,16 @@ module EasyConnect
 
       assert_selector "[role='alert']", text: "Both items are in the same group."
     end
+
+    test "an admin removes a line and it stays gone after the page is reloaded" do
+      @board.connect("DYB-1", "PR-7")
+      visit easy_connect.manage_board_path(@board)
+
+      click_on "Remove the line from Billing report to Add the report page"
+      assert_no_selector "[data-line='DYB-1 PR-7']"
+      visit easy_connect.manage_board_path(@board)
+
+      assert_no_selector "[data-line='DYB-1 PR-7']"
+    end
   end
 end

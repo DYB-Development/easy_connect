@@ -12,6 +12,8 @@ const node = { border: "1px solid #d1d5db", borderRadius: 8, padding: "8px 14px"
 
 const refusal = { margin: "0 24px", padding: "8px 14px", borderRadius: 8, background: "#fef2f2", color: "#991b1b" }
 
+const remover = { position: "absolute", transform: "translate(-50%, -50%)", width: 22, height: 22, borderRadius: 11, border: "1px solid #d1d5db", background: "white", color: "#4b5563", cursor: "pointer", lineHeight: "18px", padding: 0 }
+
 const linesLayer = { position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", overflow: "visible" }
 
 const useLines = (drawing, surface, nodes) => {
@@ -49,6 +51,8 @@ const Board = ({ base, token, initial }) => {
 
   const send = createSender({ base, token, fetch: (...request) => window.fetch(...request), onDrawing: setDrawing, onError: setError })
 
+  const labels = Object.fromEntries(drawing.columns.flatMap((group) => group.items.map((item) => [ item.id, item.label ])))
+
   const dropped = (event, to) => {
     event.preventDefault()
     const from = event.dataTransfer.getData("text/plain")
@@ -80,6 +84,11 @@ const Board = ({ base, token, initial }) => {
           <path key={`${line.from} ${line.to}`} data-line={`${line.from} ${line.to}`} d={line.path} stroke="#4b5563" strokeWidth="2" fill="none" />
         ))}
       </svg>
+      {placed.map((line) => (
+        <button key={`${line.from} ${line.to}`} type="button" style={{ ...remover, left: line.midX, top: line.midY }}
+                title={`Remove the line from ${labels[line.from]} to ${labels[line.to]}`}
+                onClick={() => send("/lines", "DELETE", { from: line.from, to: line.to })}>×</button>
+      ))}
     </div>
   )
 }
