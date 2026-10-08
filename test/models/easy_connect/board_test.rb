@@ -42,7 +42,7 @@ class EasyConnect::BoardTest < ActiveSupport::TestCase
     ])
     board.connect("DYB-1", "PR-7")
 
-    assert_equal({ "columns" => board.columns, "lines" => [ { "from" => "DYB-1", "to" => "PR-7" } ] }, board.drawing)
+    assert_equal({ "columns" => board.columns, "lines" => [ { "from" => "DYB-1", "to" => "PR-7" } ], "saved_at" => nil }, board.drawing)
   end
 
   test "a new board has not been saved" do
@@ -57,5 +57,12 @@ class EasyConnect::BoardTest < ActiveSupport::TestCase
 
       assert_equal Time.current, board.reload.saved_at
     end
+  end
+
+  test "a saved board's drawing says when it was saved" do
+    board = EasyConnect::Board.create!(host: "billing", title: "October", groups: [ "Tickets", "Pull requests" ], items: [])
+    board.mark_saved!
+
+    assert_equal board.saved_at.iso8601, board.drawing["saved_at"]
   end
 end

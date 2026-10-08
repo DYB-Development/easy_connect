@@ -32,7 +32,7 @@ module EasyConnect
     end
 
     def drawing
-      { "columns" => columns, "lines" => lines }
+      { "columns" => columns, "lines" => lines, "saved_at" => saved_at&.iso8601 }
     end
 
     def columns
