@@ -13,4 +13,8 @@ class EasyConnect::DoneItemsTest < ActiveSupport::TestCase
 
     assert_equal true, @board.reload.items.first["done"]
   end
+
+  test "marking an item not on the board is refused" do
+    assert_raises(EasyConnect::Refused) { @board.mark("PR-99", done: true) }
+  end
 end

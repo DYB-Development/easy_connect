@@ -30,6 +30,8 @@ module EasyConnect
     end
 
     def mark(id, done:)
+      raise Refused, "That item is not on this board." unless items.any? { |item| item["id"] == id }
+
       update!(items: items.map { |item| item["id"] == id ? item.merge("done" => done) : item })
     end
 
