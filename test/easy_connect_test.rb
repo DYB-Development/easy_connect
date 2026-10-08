@@ -6,4 +6,8 @@ class EasyConnectTest < ActiveSupport::TestCase
 
     assert_same host, EasyConnect.host_named("billing")
   end
+
+  test "admin pages inherit from Action Controller's base unless the host app names its own controller" do
+    assert_equal "ActionController::Base", EasyConnect.base_controller
+  end
 end
