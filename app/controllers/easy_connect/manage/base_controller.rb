@@ -9,6 +9,9 @@ module EasyConnect
       layout -> { connect_host.admin_layout }
 
       helper KeystoneUi::React::MountHelper
+      helper AppRoutesHelper
+
+      before_action { AppRoutesHelper.define_app_route_helpers }
 
       helper_method :connect_routes
 
