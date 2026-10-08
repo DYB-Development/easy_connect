@@ -58,6 +58,7 @@ module EasyConnect
 
     def items_are_sound
       items.pluck("id").tally.select { |_id, count| count > 1 }.each_key { |id| errors.add(:items, "share the id #{id}") }
+      items.select { |item| item["label"].blank? }.each { |item| errors.add(:items, "#{item["id"]} has no label") }
     end
   end
 end

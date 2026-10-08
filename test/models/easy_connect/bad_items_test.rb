@@ -12,4 +12,16 @@ class EasyConnect::BadItemsTest < ActiveSupport::TestCase
 
     assert_includes error.message, "DYB-1"
   end
+
+  test "adding an item whose id the board already holds is refused" do
+    board = create(items: [ { "id" => "DYB-1", "label" => "Billing report", "group" => "Tickets" } ])
+
+    assert_raises(ActiveRecord::RecordInvalid) { board.add_items([ { "id" => "DYB-1", "label" => "Again", "group" => "Tickets" } ]) }
+  end
+
+  test "an item with no label is refused and named" do
+    error = assert_raises(ActiveRecord::RecordInvalid) { create(items: [ { "id" => "DYB-1", "group" => "Tickets" } ]) }
+
+    assert_includes error.message, "DYB-1 has no label"
+  end
 end
