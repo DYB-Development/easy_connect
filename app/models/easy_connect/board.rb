@@ -6,6 +6,8 @@ module EasyConnect
 
     belongs_to :owner, polymorphic: true, optional: true
 
+    validate :board_is_sound
+
     def mark_saved!
       update!(saved_at: Time.current)
     end
@@ -50,6 +52,17 @@ module EasyConnect
 
     def drawing
       shape_rules.placement(SHOWN).merge("lines" => lines, "saved_at" => saved_at&.iso8601)
+    end
+
+    private
+
+    def board_is_sound
+      return errors.add(:shape, "#{shape} is not a shape") unless Shapes.known?(shape)
+
+      shape_rules.problems.each { |problem| errors.add(:base, problem) }
+      items.pluck("id").tally.select { |_id, count| count > 1 }.each_key { |id| errors.add(:items, "share the id #{id}") }
+      items.select { |item| item["label"].blank? }.each { |item| errors.add(:items, "#{item["id"]} has no label") }
+      items.reject { |item| groups.include?(item["group"]) }.each { |item| errors.add(:items, "#{item["id"]} is in a group the board does not have") }
     end
   end
 end

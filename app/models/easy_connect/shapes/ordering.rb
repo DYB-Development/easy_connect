@@ -7,6 +7,10 @@ module EasyConnect
         @lines = lines
       end
 
+      def problems
+        []
+      end
+
       def placement(shown)
         placed = Rows.new(@items.pluck("id"), @lines).rows
 
