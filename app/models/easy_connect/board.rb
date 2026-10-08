@@ -23,6 +23,10 @@ module EasyConnect
       Shapes::Connections.new(groups, items)
     end
 
+    def drawing
+      { "columns" => columns, "lines" => lines }
+    end
+
     def columns
       groups.map do |group|
         { "name" => group, "items" => items.select { |item| item["group"] == group }.map { |item| item.slice("id", "label") } }
