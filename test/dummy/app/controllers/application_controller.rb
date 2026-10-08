@@ -8,6 +8,10 @@ class ApplicationController < ActionController::Base
     nil
   end
 
+  def send_the_admin_on(board_id)
+    "/billed/#{board_id}"
+  end
+
   def current_account
     Account.find_by(id: request.headers["X-Account"])
   end
