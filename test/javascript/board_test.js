@@ -9,3 +9,9 @@ const drawn = (columns) => renderToStaticMarkup(React.createElement(Board, { col
 test("heads a column with each group's name", () => {
   assert.match(drawn([ { name: "Tickets", items: [] } ]), /<h2[^>]*>Tickets<\/h2>/)
 })
+
+test("draws a node showing each item's label in its group's column", () => {
+  const html = drawn([ { name: "Tickets", items: [ { id: "DYB-1", label: "Billing report" } ] } ])
+
+  assert.match(html, /<section[^>]*><h2>Tickets<\/h2><div[^>]*data-item="DYB-1"[^>]*>Billing report<\/div><\/section>/)
+})
