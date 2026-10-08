@@ -13,7 +13,7 @@ test("heads a column with each group's name", () => {
 test("draws a node showing each item's label in its group's column", () => {
   const html = drawn([ { name: "Tickets", items: [ { id: "DYB-1", label: "Billing report" } ] } ])
 
-  assert.match(html, /<section[^>]*><h2>Tickets<\/h2><div[^>]*data-item="DYB-1"[^>]*>Billing report<\/div><\/section>/)
+  assert.match(html, /<section[^>]*><h2>Tickets<\/h2><div[^>]*data-item="DYB-1"[^>]*><div[^>]*>Billing report<\/div><\/div><\/section>/)
 })
 
 test("says a board that has not been saved is not saved yet", () => {
@@ -29,5 +29,11 @@ const ordered = (rows) => renderToStaticMarkup(React.createElement(Board, { base
 test("draws an ordering board's items side by side in their rows", () => {
   const html = ordered([ [ { id: "plan", label: "Plan" } ], [ { id: "build", label: "Build" }, { id: "ship", label: "Ship" } ] ])
 
-  assert.match(html, /<div[^>]*data-row="1"[^>]*><div[^>]*data-item="build"[^>]*>Build<\/div><div[^>]*data-item="ship"[^>]*>Ship<\/div><\/div>/)
+  assert.match(html, /<div[^>]*data-row="1"[^>]*><div[^>]*data-item="build"[^>]*><div[^>]*>Build<\/div><\/div><div[^>]*data-item="ship"[^>]*><div[^>]*>Ship<\/div><\/div><\/div>/)
+})
+
+test("shows an item's detail lines under its label", () => {
+  const html = drawn([ { name: "Pull requests", items: [ { id: "PR-7", label: "Add the report page", details: [ "dyb_web", "Merged Oct 2" ] } ] } ])
+
+  assert.match(html, /Add the report page<\/div><div[^>]*>dyb_web<\/div><div[^>]*>Merged Oct 2<\/div>/)
 })
