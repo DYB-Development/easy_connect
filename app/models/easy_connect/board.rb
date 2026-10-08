@@ -28,6 +28,8 @@ module EasyConnect
     end
 
     def shape_rules
+      return Shapes::Ordering.new(groups, items) if shape == "ordering"
+
       Shapes::Connections.new(groups, items)
     end
 
