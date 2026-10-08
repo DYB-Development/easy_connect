@@ -1,0 +1,33 @@
+require "test_helper"
+
+class EasyConnect::DoneItemsTest < ActiveSupport::TestCase
+  setup do
+    @board = EasyConnect::Board.create!(host: "billing", title: "October", groups: [ "Tickets", "Pull requests" ], items: [
+      { "id" => "DYB-1", "label" => "Billing report", "group" => "Tickets" },
+      { "id" => "PR-7", "label" => "Add the report page", "group" => "Pull requests" }
+    ])
+  end
+
+  test "an item marked done keeps the mark" do
+    @board.mark("DYB-1", done: true)
+
+    assert_equal true, @board.reload.items.first["done"]
+  end
+
+  test "marking an item not on the board is refused" do
+    assert_raises(EasyConnect::Refused) { @board.mark("PR-99", done: true) }
+  end
+
+  test "a board's drawing says which items are done" do
+    @board.mark("PR-7", done: true)
+
+    assert_equal true, @board.drawing["columns"].last["items"].first["done"]
+  end
+
+  test "a board's result keeps lines to done items and does not say which items are done" do
+    @board.connect("DYB-1", "PR-7")
+    @board.mark("PR-7", done: true)
+
+    assert_equal({ "shape" => "connections", "items" => [ "DYB-1", "PR-7" ], "lines" => [ [ "DYB-1", "PR-7" ] ] }, JSON.parse(@board.result))
+  end
+end

@@ -2,7 +2,7 @@ module EasyConnect
   class Board < ApplicationRecord
     self.table_name = "easy_connect_boards"
 
-    SHOWN = %w[id label details url].freeze
+    SHOWN = %w[id label details url done].freeze
 
     belongs_to :owner, polymorphic: true, optional: true
 
@@ -27,6 +27,12 @@ module EasyConnect
 
     def disconnect(from, to)
       update!(lines: lines - [ shape_rules.line(from, to) ])
+    end
+
+    def mark(id, done:)
+      raise Refused, "That item is not on this board." unless items.any? { |item| item["id"] == id }
+
+      update!(items: items.map { |item| item["id"] == id ? item.merge("done" => done) : item })
     end
 
     def shape_rules
