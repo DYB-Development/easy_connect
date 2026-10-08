@@ -12,4 +12,12 @@ class EasyConnect::RowsTest < ActiveSupport::TestCase
 
     assert_equal({ "plan" => 0, "build" => 1, "review" => 1, "ship" => 1 }, rows.rows)
   end
+
+  test "items no starting item leads to all sit in one row below every other row" do
+    rows = EasyConnect::Rows.new(%w[plan build loop_a loop_b], [
+      line("plan", "build"), line("loop_a", "loop_b"), line("loop_b", "loop_a")
+    ])
+
+    assert_equal({ "plan" => 0, "build" => 1, "loop_a" => 2, "loop_b" => 2 }, rows.rows)
+  end
 end

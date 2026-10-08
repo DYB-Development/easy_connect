@@ -6,6 +6,15 @@ module EasyConnect
     end
 
     def rows
+      walked = walk
+      stranded = @ids - walked.keys
+
+      walked.merge(stranded.index_with((walked.values.max || -1) + 1))
+    end
+
+    private
+
+    def walk
       seen = {}
       frontier = starting_points.map { |id| [ id, 0 ] }
 
@@ -19,8 +28,6 @@ module EasyConnect
 
       seen
     end
-
-    private
 
     def starting_points
       arrived = @lines.map { |line| line["to"] }
