@@ -20,4 +20,13 @@ class EasyConnect::ChangingItemsTest < ActiveSupport::TestCase
 
     assert_equal %w[DYB-1 PR-7], @board.reload.items.pluck("id")
   end
+
+  test "removing an item removes every line touching it and keeps the others" do
+    @board.connect("DYB-1", "PR-7")
+    @board.connect("DYB-2", "PR-7")
+
+    @board.remove_items([ "DYB-1" ])
+
+    assert_equal [ { "from" => "DYB-2", "to" => "PR-7" } ], @board.reload.lines
+  end
 end
