@@ -20,4 +20,10 @@ class EasyConnect::BoardLinesTest < ActiveSupport::TestCase
 
     assert_equal [ { "from" => "DYB-1", "to" => "PR-7" } ], @board.reload.lines
   end
+
+  test "a second line between the same two items is refused" do
+    @board.connect("DYB-1", "PR-7")
+
+    assert_raises(EasyConnect::Refused) { @board.connect("PR-7", "DYB-1") }
+  end
 end

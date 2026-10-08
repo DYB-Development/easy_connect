@@ -9,7 +9,10 @@ module EasyConnect
     end
 
     def connect(from, to)
-      update!(lines: lines + [ shape.line(from, to) ])
+      line = shape.line(from, to)
+      raise Refused, "Those two items are already joined." if lines.include?(line)
+
+      update!(lines: lines + [ line ])
     end
 
     def shape
