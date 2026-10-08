@@ -29,5 +29,13 @@ module EasyConnect
 
       assert_equal [], @board.reload.lines
     end
+
+    test "the board page fetches the board's drawing again after an edit" do
+      @board.connect("DYB-1", "PR-7")
+
+      get easy_connect.manage_board_path(@board, format: :json)
+
+      assert_equal @board.drawing, response.parsed_body
+    end
   end
 end
