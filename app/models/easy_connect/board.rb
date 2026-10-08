@@ -29,6 +29,10 @@ module EasyConnect
       update!(lines: lines - [ shape_rules.line(from, to) ])
     end
 
+    def add_items(added)
+      update!(items: items + added.map(&:stringify_keys))
+    end
+
     def mark(id, done:)
       raise Refused, "That item is not on this board." unless items.any? { |item| item["id"] == id }
 
