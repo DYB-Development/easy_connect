@@ -15,5 +15,11 @@ module EasyConnect
 
       assert_equal [ { "from" => "DYB-1", "to" => "PR-7" } ], @board.reload.lines
     end
+
+    test "a refused line is answered with the reason it was refused" do
+      post easy_connect.manage_board_lines_path(@board), params: { from: "DYB-1", to: "DYB-2" }, as: :json
+
+      assert_equal [ 422, "Both items are in the same group." ], [ response.status, response.parsed_body["error"] ]
+    end
   end
 end
