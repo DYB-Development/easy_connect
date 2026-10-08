@@ -36,5 +36,15 @@ module EasyConnect
 
       assert_no_selector "[data-line='DYB-1 PR-7']"
     end
+
+    test "a line an admin drew is still there after the page is reloaded" do
+      visit easy_connect.manage_board_path(@board)
+      find("[data-item='PR-7']").drag_to(find("[data-item='DYB-1']"))
+      assert_selector "[data-line='DYB-1 PR-7']"
+
+      visit easy_connect.manage_board_path(@board)
+
+      assert_selector "[data-line='DYB-1 PR-7']"
+    end
   end
 end
