@@ -37,5 +37,14 @@ module EasyConnect
 
       assert_selector "[data-saved]", text: "Saved "
     end
+
+    test "an ordering board where every item has a line saves without asking" do
+      @board.connect("build", "test")
+      visit easy_connect.manage_board_path(@board)
+
+      click_on "Save"
+
+      assert_selector "[data-saved]", text: "Saved "
+    end
   end
 end
