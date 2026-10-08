@@ -11,3 +11,11 @@ test("a line runs from the right edge of the first item to the left edge of the 
 
   assert.equal(between(from, to, frame, surface).path, "M 100 20 L 300 120")
 })
+
+test("a line's middle is halfway between its two ends", () => {
+  const from = { left: 10, top: 20, width: 100, height: 40 }
+  const to = { left: 310, top: 120, width: 100, height: 40 }
+  const { midX, midY } = between(from, to, frame, surface)
+
+  assert.deepEqual({ midX, midY }, { midX: 200, midY: 70 })
+})
