@@ -85,15 +85,16 @@ const Board = ({ base, token, initial }) => {
     <div key={item.id}
          ref={(element) => { nodes.current[item.id] = element }}
          data-item={item.id}
+         data-done={item.done ? "true" : undefined}
          draggable
          onDragStart={(event) => { event.dataTransfer.effectAllowed = "link"; event.dataTransfer.setData("text/plain", item.id) }}
          onDragOver={(event) => event.preventDefault()}
          onDrop={(event) => dropped(event, item.id)}
-         style={node}>
+         style={item.done ? { ...node, opacity: 0.55 } : node}>
       <div style={named}>{item.label}</div>
       {(item.details || []).map((line) => <div key={line} style={detail}>{line}</div>)}
       <button type="button" draggable={false} style={marker}
-              onClick={() => send(`/items/${encodeURIComponent(item.id)}`, "PATCH", { done: !item.done })}>Mark done</button>
+              onClick={() => send(`/items/${encodeURIComponent(item.id)}`, "PATCH", { done: !item.done })}>{item.done ? "Undo done" : "Mark done"}</button>
       {onTheWeb(item.url) && <a href={item.url} target="_blank" rel="noopener noreferrer" draggable={false} style={opener}>Open</a>}
     </div>
   )

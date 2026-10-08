@@ -55,3 +55,9 @@ test("offers to mark an item done from its node", () => {
 
   assert.match(html, /data-item="DYB-1"[^>]*>.*<button[^>]*>Mark done<\/button>/)
 })
+
+test("offers to undo the mark on a done item and shows it as done", () => {
+  const html = drawn([ { name: "Tickets", items: [ { id: "DYB-1", label: "Billing report", done: true } ] } ])
+
+  assert.match(html, /data-item="DYB-1"[^>]*data-done="true"[^>]*>.*<button[^>]*>Undo done<\/button>/)
+})
