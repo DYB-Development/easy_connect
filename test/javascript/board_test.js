@@ -43,3 +43,9 @@ test("links a node to its item in a new tab", () => {
 
   assert.match(html, /<a href="https:\/\/github.com\/acme\/app\/pull\/7" target="_blank" rel="noopener noreferrer"[^>]*>Open<\/a>/)
 })
+
+test("draws no link for an address that is not a web address", () => {
+  const html = drawn([ { name: "Pull requests", items: [ { id: "PR-7", label: "Add the report page", url: "javascript:alert(1)" } ] } ])
+
+  assert.doesNotMatch(html, /<a /)
+})
