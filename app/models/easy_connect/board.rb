@@ -34,7 +34,15 @@ module EasyConnect
     end
 
     def drawing
-      { "columns" => columns, "lines" => lines, "saved_at" => saved_at&.iso8601 }
+      placed = shape == "ordering" ? { "rows" => rows } : { "columns" => columns }
+
+      placed.merge("lines" => lines, "saved_at" => saved_at&.iso8601)
+    end
+
+    def rows
+      placed = Rows.new(items.pluck("id"), lines).rows
+
+      items.group_by { |item| placed[item["id"]] }.sort.map { |_row, held| held.map { |item| item.slice("id", "label") } }
     end
 
     def columns

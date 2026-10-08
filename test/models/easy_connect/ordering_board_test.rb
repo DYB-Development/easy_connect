@@ -14,4 +14,14 @@ class EasyConnect::OrderingBoardTest < ActiveSupport::TestCase
 
     assert_equal [ { "from" => "build", "to" => "plan" } ], @board.reload.lines
   end
+
+  test "an ordering board's drawing holds its items in rows, in the order the host handed them in" do
+    @board.connect("plan", "ship")
+    @board.connect("plan", "build")
+
+    assert_equal [
+      [ { "id" => "plan", "label" => "Plan" } ],
+      [ { "id" => "build", "label" => "Build" }, { "id" => "ship", "label" => "Ship" } ]
+    ], @board.drawing["rows"]
+  end
 end
