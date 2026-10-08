@@ -29,6 +29,15 @@ module EasyConnect
       update!(lines: lines - [ shape_rules.line(from, to) ])
     end
 
+    def add_items(added)
+      update!(items: items + added.map(&:stringify_keys))
+    end
+
+    def remove_items(ids)
+      update!(items: items.reject { |item| ids.include?(item["id"]) },
+        lines: lines.reject { |line| ids.include?(line["from"]) || ids.include?(line["to"]) })
+    end
+
     def mark(id, done:)
       raise Refused, "That item is not on this board." unless items.any? { |item| item["id"] == id }
 
