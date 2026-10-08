@@ -7,6 +7,8 @@ module EasyConnect
       end
 
       def line(from, to)
+        raise Refused, "Both items are in the same group." if group_of(from) == group_of(to)
+
         ends = [ from, to ].sort_by { |id| @groups.index(group_of(id)) }
 
         { "from" => ends.first, "to" => ends.last }

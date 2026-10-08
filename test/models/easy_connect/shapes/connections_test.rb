@@ -12,4 +12,8 @@ class EasyConnect::Shapes::ConnectionsTest < ActiveSupport::TestCase
   test "a line dragged from the second group runs from the first group to the second" do
     assert_equal({ "from" => "DYB-1", "to" => "PR-7" }, @shape.line("PR-7", "DYB-1"))
   end
+
+  test "a line between two items in the same group is refused" do
+    assert_raises(EasyConnect::Refused) { @shape.line("DYB-1", "DYB-2") }
+  end
 end
