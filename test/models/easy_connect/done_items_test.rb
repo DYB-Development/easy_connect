@@ -17,4 +17,10 @@ class EasyConnect::DoneItemsTest < ActiveSupport::TestCase
   test "marking an item not on the board is refused" do
     assert_raises(EasyConnect::Refused) { @board.mark("PR-99", done: true) }
   end
+
+  test "a board's drawing says which items are done" do
+    @board.mark("PR-7", done: true)
+
+    assert_equal true, @board.drawing["columns"].last["items"].first["done"]
+  end
 end

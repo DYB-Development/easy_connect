@@ -2,7 +2,7 @@ module EasyConnect
   class Board < ApplicationRecord
     self.table_name = "easy_connect_boards"
 
-    SHOWN = %w[id label details url].freeze
+    SHOWN = %w[id label details url done].freeze
 
     belongs_to :owner, polymorphic: true, optional: true
 
