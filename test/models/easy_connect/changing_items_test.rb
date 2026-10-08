@@ -14,4 +14,10 @@ class EasyConnect::ChangingItemsTest < ActiveSupport::TestCase
 
     assert_equal %w[DYB-1 DYB-2 PR-7 PR-8], @board.reload.items.pluck("id")
   end
+
+  test "host code removes items from an existing board" do
+    @board.remove_items([ "DYB-2" ])
+
+    assert_equal %w[DYB-1 PR-7], @board.reload.items.pluck("id")
+  end
 end

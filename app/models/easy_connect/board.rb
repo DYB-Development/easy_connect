@@ -33,6 +33,10 @@ module EasyConnect
       update!(items: items + added.map(&:stringify_keys))
     end
 
+    def remove_items(ids)
+      update!(items: items.reject { |item| ids.include?(item["id"]) })
+    end
+
     def mark(id, done:)
       raise Refused, "That item is not on this board." unless items.any? { |item| item["id"] == id }
 
