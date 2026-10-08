@@ -29,6 +29,10 @@ module EasyConnect
       update!(lines: lines - [ shape_rules.line(from, to) ])
     end
 
+    def mark(id, done:)
+      update!(items: items.map { |item| item["id"] == id ? item.merge("done" => done) : item })
+    end
+
     def shape_rules
       return Shapes::Ordering.new(groups, items) if shape == "ordering"
 
