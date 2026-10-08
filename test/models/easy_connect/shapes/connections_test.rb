@@ -16,4 +16,8 @@ class EasyConnect::Shapes::ConnectionsTest < ActiveSupport::TestCase
   test "a line between two items in the same group is refused" do
     assert_raises(EasyConnect::Refused) { @shape.line("DYB-1", "DYB-2") }
   end
+
+  test "a line to an item not on the board is refused" do
+    assert_raises(EasyConnect::Refused) { @shape.line("DYB-1", "PR-99") }
+  end
 end
