@@ -2,6 +2,8 @@ module EasyConnect
   class Board < ApplicationRecord
     self.table_name = "easy_connect_boards"
 
+    SHOWN = %w[id label details url].freeze
+
     belongs_to :owner, polymorphic: true, optional: true
 
     def mark_saved!
@@ -42,12 +44,12 @@ module EasyConnect
     def rows
       placed = Rows.new(items.pluck("id"), lines).rows
 
-      items.group_by { |item| placed[item["id"]] }.sort.map { |_row, held| held.map { |item| item.slice("id", "label") } }
+      items.group_by { |item| placed[item["id"]] }.sort.map { |_row, held| held.map { |item| item.slice(*SHOWN) } }
     end
 
     def columns
       groups.map do |group|
-        { "name" => group, "items" => items.select { |item| item["group"] == group }.map { |item| item.slice("id", "label") } }
+        { "name" => group, "items" => items.select { |item| item["group"] == group }.map { |item| item.slice(*SHOWN) } }
       end
     end
   end

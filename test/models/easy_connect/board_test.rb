@@ -65,4 +65,11 @@ class EasyConnect::BoardTest < ActiveSupport::TestCase
 
     assert_equal board.saved_at.iso8601, board.drawing["saved_at"]
   end
+
+  test "a board's columns carry each item's detail lines and link" do
+    item = { "id" => "PR-7", "label" => "Add the report page", "group" => "Pull requests", "details" => [ "dyb_web", "Merged Oct 2" ], "url" => "https://github.com/acme/app/pull/7" }
+    board = EasyConnect::Board.new(groups: [ "Tickets", "Pull requests" ], items: [ item ])
+
+    assert_equal [ item.except("group") ], board.columns.last["items"]
+  end
 end
