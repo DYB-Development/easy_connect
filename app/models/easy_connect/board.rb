@@ -8,6 +8,10 @@ module EasyConnect
       { items: items.pluck("id"), lines: [] }.to_json
     end
 
+    def connect(from, to)
+      update!(lines: lines + [ { "from" => from, "to" => to } ])
+    end
+
     def columns
       groups.map do |group|
         { "name" => group, "items" => items.select { |item| item["group"] == group }.map { |item| item.slice("id", "label") } }
