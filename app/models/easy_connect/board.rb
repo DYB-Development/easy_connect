@@ -45,27 +45,11 @@ module EasyConnect
     end
 
     def shape_rules
-      return Shapes::Ordering.new(groups, items) if shape == "ordering"
-
-      Shapes::Connections.new(groups, items)
+      Shapes.named(shape).new(groups, items, lines)
     end
 
     def drawing
-      placed = shape == "ordering" ? { "rows" => rows } : { "columns" => columns }
-
-      placed.merge("lines" => lines, "saved_at" => saved_at&.iso8601)
-    end
-
-    def rows
-      placed = Rows.new(items.pluck("id"), lines).rows
-
-      items.group_by { |item| placed[item["id"]] }.sort.map { |_row, held| held.map { |item| item.slice(*SHOWN) } }
-    end
-
-    def columns
-      groups.map do |group|
-        { "name" => group, "items" => items.select { |item| item["group"] == group }.map { |item| item.slice(*SHOWN) } }
-      end
+      shape_rules.placement(SHOWN).merge("lines" => lines, "saved_at" => saved_at&.iso8601)
     end
   end
 end

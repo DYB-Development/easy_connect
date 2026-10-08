@@ -28,7 +28,7 @@ class EasyConnect::BoardTest < ActiveSupport::TestCase
     assert_equal [
       { "name" => "Tickets", "items" => [ { "id" => "DYB-2", "label" => "Invoices" }, { "id" => "DYB-1", "label" => "Billing report" } ] },
       { "name" => "Pull requests", "items" => [ { "id" => "PR-7", "label" => "Add the report page" } ] }
-    ], board.columns
+    ], board.drawing["columns"]
   end
 
   test "a new board has no lines" do
@@ -42,7 +42,7 @@ class EasyConnect::BoardTest < ActiveSupport::TestCase
     ])
     board.connect("DYB-1", "PR-7")
 
-    assert_equal({ "columns" => board.columns, "lines" => [ { "from" => "DYB-1", "to" => "PR-7" } ], "saved_at" => nil }, board.drawing)
+    assert_equal({ "columns" => board.drawing["columns"], "lines" => [ { "from" => "DYB-1", "to" => "PR-7" } ], "saved_at" => nil }, board.drawing)
   end
 
   test "a new board has not been saved" do
@@ -70,6 +70,6 @@ class EasyConnect::BoardTest < ActiveSupport::TestCase
     item = { "id" => "PR-7", "label" => "Add the report page", "group" => "Pull requests", "details" => [ "dyb_web", "Merged Oct 2" ], "url" => "https://github.com/acme/app/pull/7" }
     board = EasyConnect::Board.new(groups: [ "Tickets", "Pull requests" ], items: [ item ])
 
-    assert_equal [ item.except("group") ], board.columns.last["items"]
+    assert_equal [ item.except("group") ], board.drawing["columns"].last["items"]
   end
 end

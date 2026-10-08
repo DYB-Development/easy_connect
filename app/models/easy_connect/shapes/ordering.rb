@@ -1,9 +1,16 @@
 module EasyConnect
   module Shapes
     class Ordering
-      def initialize(groups, items)
+      def initialize(groups, items, lines = [])
         @groups = groups
         @items = items
+        @lines = lines
+      end
+
+      def placement(shown)
+        placed = Rows.new(@items.pluck("id"), @lines).rows
+
+        { "rows" => @items.group_by { |item| placed[item["id"]] }.sort.map { |_row, held| held.map { |item| item.slice(*shown) } } }
       end
 
       def line(from, to)
