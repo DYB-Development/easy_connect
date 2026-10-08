@@ -60,7 +60,7 @@ const Board = ({ base, token, initial }) => {
   const nodes = useRef({})
   const placed = useLines(drawing, surface, nodes)
 
-  const send = createSender({ base, token, fetch: (...request) => window.fetch(...request), onDrawing: setDrawing, onError: setError })
+  const send = createSender({ base, token, fetch: (...request) => window.fetch(...request), onDrawing: setDrawing, onError: setError, onRedirect: (address) => window.location.assign(address) })
 
   const items = drawing.rows ? drawing.rows.flat() : drawing.columns.flatMap((group) => group.items)
   const labels = Object.fromEntries(items.map((item) => [ item.id, item.label ]))
