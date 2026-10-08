@@ -11,4 +11,8 @@ class EasyConnect::Shapes::OrderingTest < ActiveSupport::TestCase
   test "a line runs from the item dragged from to the item dropped on" do
     assert_equal({ "from" => "build", "to" => "plan" }, @shape.line("build", "plan"))
   end
+
+  test "a line from an item to itself is refused" do
+    assert_raises(EasyConnect::Refused) { @shape.line("plan", "plan") }
+  end
 end
