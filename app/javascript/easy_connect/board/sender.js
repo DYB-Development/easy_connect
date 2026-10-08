@@ -5,4 +5,9 @@ export const createSender = ({ base, token, fetch, onError }) => async (path, me
     method, headers: { "Content-Type": "application/json", "X-CSRF-Token": token }, body: body && JSON.stringify(body)
   }).catch(() => null)
   if (!response) return onError(UNREACHABLE)
+
+  if (!response.ok) {
+    const answered = await response.json().catch(() => ({}))
+    return onError(answered.error || "That change was refused.")
+  }
 }
