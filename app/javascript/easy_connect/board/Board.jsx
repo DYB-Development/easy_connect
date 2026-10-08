@@ -20,6 +20,14 @@ const saveButton = { padding: "8px 16px", borderRadius: 8, border: 0, background
 
 const savedWhen = (savedAt) => savedAt ? `Saved ${new Date(savedAt).toLocaleString()}` : "Not saved yet"
 
+const named = { fontWeight: 600 }
+
+const detail = { fontSize: 13, color: "#6b7280" }
+
+const opener = { fontSize: 13, color: "#2563eb" }
+
+const onTheWeb = (address) => /^https?:\/\//.test(address || "")
+
 const refusal = { margin: "0 24px", padding: "8px 14px", borderRadius: 8, background: "#fef2f2", color: "#991b1b" }
 
 const remover = { position: "absolute", transform: "translate(-50%, -50%)", width: 22, height: 22, borderRadius: 11, border: "1px solid #d1d5db", background: "white", color: "#4b5563", cursor: "pointer", lineHeight: "18px", padding: 0 }
@@ -79,7 +87,11 @@ const Board = ({ base, token, initial }) => {
          onDragStart={(event) => { event.dataTransfer.effectAllowed = "link"; event.dataTransfer.setData("text/plain", item.id) }}
          onDragOver={(event) => event.preventDefault()}
          onDrop={(event) => dropped(event, item.id)}
-         style={node}>{item.label}</div>
+         style={node}>
+      <div style={named}>{item.label}</div>
+      {(item.details || []).map((line) => <div key={line} style={detail}>{line}</div>)}
+      {onTheWeb(item.url) && <a href={item.url} target="_blank" rel="noopener noreferrer" draggable={false} style={opener}>Open</a>}
+    </div>
   )
 
   return (
