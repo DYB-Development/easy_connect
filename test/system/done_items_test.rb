@@ -18,5 +18,18 @@ module EasyConnect
 
       assert_selector "[data-item='PR-7']", text: "Undo done"
     end
+
+    test "an admin hides done items and their lines, then shows them again" do
+      @board.connect("DYB-1", "PR-7")
+      @board.mark("PR-7", done: true)
+      visit easy_connect.manage_board_path(@board)
+
+      click_on "Hide done items"
+      assert_no_selector "[data-item='PR-7']"
+      assert_no_selector "[data-line='DYB-1 PR-7']"
+      click_on "Show done items"
+
+      assert_selector "[data-line='DYB-1 PR-7']"
+    end
   end
 end

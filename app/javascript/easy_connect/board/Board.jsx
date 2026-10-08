@@ -36,7 +36,7 @@ const remover = { position: "absolute", transform: "translate(-50%, -50%)", widt
 
 const linesLayer = { position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", overflow: "visible" }
 
-const useLines = (drawing, surface, nodes) => {
+const useLines = (drawing, surface, nodes, hidingDone) => {
   const [ placed, setPlaced ] = useState([])
 
   useLayoutEffect(() => {
@@ -58,7 +58,7 @@ const useLines = (drawing, surface, nodes) => {
     window.addEventListener("resize", measure)
 
     return () => window.removeEventListener("resize", measure)
-  }, [ drawing ])
+  }, [ drawing, hidingDone ])
 
   return placed
 }
@@ -68,7 +68,9 @@ const Board = ({ base, token, initial }) => {
   const [ error, setError ] = useState(null)
   const surface = useRef(null)
   const nodes = useRef({})
-  const placed = useLines(drawing, surface, nodes)
+  const [ hidingDone, setHidingDone ] = useState(false)
+  const placed = useLines(drawing, surface, nodes, hidingDone)
+  const shown = (held) => held.filter((item) => !(hidingDone && item.done))
 
   const send = createSender({ base, token, fetch: (...request) => window.fetch(...request), onDrawing: setDrawing, onError: setError, onRedirect: (address) => window.location.assign(address) })
 
@@ -103,13 +105,14 @@ const Board = ({ base, token, initial }) => {
     <div ref={surface} style={surfaceSide}>
       <div style={toolbar}>
         <button type="button" style={saveButton} onClick={() => send("/save", "POST")}>Save</button>
+        <button type="button" style={marker} onClick={() => setHidingDone(!hidingDone)}>{hidingDone ? "Show done items" : "Hide done items"}</button>
         <span data-saved>{savedWhen(drawing.saved_at)}</span>
       </div>
       {error && <p role="alert" style={refusal}>{error}</p>}
       {drawing.rows ? (
         <div style={rowsSide}>
           {drawing.rows.map((held, index) => (
-            <div key={index} data-row={index} style={row}>{held.map(drawNode)}</div>
+            <div key={index} data-row={index} style={row}>{shown(held).map(drawNode)}</div>
           ))}
         </div>
       ) : (
@@ -117,7 +120,7 @@ const Board = ({ base, token, initial }) => {
           {drawing.columns.map((group) => (
             <section key={group.name} style={column}>
               <h2>{group.name}</h2>
-              {group.items.map(drawNode)}
+              {shown(group.items).map(drawNode)}
             </section>
           ))}
         </div>
