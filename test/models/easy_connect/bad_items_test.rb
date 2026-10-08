@@ -36,4 +36,10 @@ class EasyConnect::BadItemsTest < ActiveSupport::TestCase
 
     assert_includes error.message, "A connections board needs exactly two groups"
   end
+
+  test "a board whose shape is not one the canvas knows is refused and names the shape" do
+    error = assert_raises(ActiveRecord::RecordInvalid) { create(shape: "orderng") }
+
+    assert_includes error.message, "orderng is not a shape"
+  end
 end

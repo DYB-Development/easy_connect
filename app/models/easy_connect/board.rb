@@ -6,7 +6,7 @@ module EasyConnect
 
     belongs_to :owner, polymorphic: true, optional: true
 
-    validate :items_are_sound
+    validate :board_is_sound
 
     def mark_saved!
       update!(saved_at: Time.current)
@@ -56,7 +56,9 @@ module EasyConnect
 
     private
 
-    def items_are_sound
+    def board_is_sound
+      return errors.add(:shape, "#{shape} is not a shape") unless Shapes.known?(shape)
+
       shape_rules.problems.each { |problem| errors.add(:base, problem) }
       items.pluck("id").tally.select { |_id, count| count > 1 }.each_key { |id| errors.add(:items, "share the id #{id}") }
       items.select { |item| item["label"].blank? }.each { |item| errors.add(:items, "#{item["id"]} has no label") }
