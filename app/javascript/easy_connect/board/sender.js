@@ -11,5 +11,6 @@ export const createSender = ({ base, token, fetch, onDrawing, onError }) => asyn
     return onError(answered.error || "That change was refused.")
   }
 
+  onError(null)
   onDrawing(await (await fetch(base + ".json", { headers: { Accept: "application/json" } })).json())
 }

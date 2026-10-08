@@ -33,3 +33,12 @@ test("an accepted edit fetches the board's drawing again", async () => {
 
   assert.deepEqual(drawings, [ drawing ])
 })
+
+test("an accepted edit clears the last error shown", async () => {
+  const errors = []
+  const server = async (url) => url === "/boards/1.json" ? { ok: true, json: async () => ({}) } : { ok: true, status: 204 }
+
+  await sending(server, errors)("/lines", "DELETE", {})
+
+  assert.deepEqual(errors, [ null ])
+})
