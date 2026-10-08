@@ -23,4 +23,11 @@ class EasyConnect::DoneItemsTest < ActiveSupport::TestCase
 
     assert_equal true, @board.drawing["columns"].last["items"].first["done"]
   end
+
+  test "a board's result keeps lines to done items and does not say which items are done" do
+    @board.connect("DYB-1", "PR-7")
+    @board.mark("PR-7", done: true)
+
+    assert_equal({ "shape" => "connections", "items" => [ "DYB-1", "PR-7" ], "lines" => [ [ "DYB-1", "PR-7" ] ] }, JSON.parse(@board.result))
+  end
 end
