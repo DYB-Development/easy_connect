@@ -12,6 +12,8 @@ const node = { border: "1px solid #d1d5db", borderRadius: 8, padding: "8px 14px"
 
 const toolbar = { display: "flex", alignItems: "center", gap: 12, padding: "0 24px" }
 
+const saveButton = { padding: "8px 16px", borderRadius: 8, border: 0, background: "#2563eb", color: "white", fontWeight: 600, cursor: "pointer" }
+
 const savedWhen = (savedAt) => savedAt ? `Saved ${new Date(savedAt).toLocaleString()}` : "Not saved yet"
 
 const refusal = { margin: "0 24px", padding: "8px 14px", borderRadius: 8, background: "#fef2f2", color: "#991b1b" }
@@ -66,6 +68,7 @@ const Board = ({ base, token, initial }) => {
   return (
     <div ref={surface} style={surfaceSide}>
       <div style={toolbar}>
+        <button type="button" style={saveButton} onClick={() => send("/save", "POST")}>Save</button>
         <span data-saved>{savedWhen(drawing.saved_at)}</span>
       </div>
       {error && <p role="alert" style={refusal}>{error}</p>}
