@@ -9,6 +9,10 @@ module EasyConnect
       layout -> { connect_host.admin_layout }
 
       helper KeystoneUi::React::MountHelper
+
+      rescue_from Refused do |refusal|
+        render json: { error: refusal.message }, status: :unprocessable_entity
+      end
     end
   end
 end
