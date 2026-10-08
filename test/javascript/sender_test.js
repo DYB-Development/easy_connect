@@ -2,8 +2,8 @@ import { test } from "node:test"
 import assert from "node:assert/strict"
 import { createSender } from "../../app/javascript/easy_connect/board/sender.js"
 
-const sending = (fetch, errors = [], drawings = []) =>
-  createSender({ base: "/boards/1", token: "t", fetch, onDrawing: (drawing) => drawings.push(drawing), onError: (error) => errors.push(error) })
+const sending = (fetch, errors = [], drawings = [], addresses = []) =>
+  createSender({ base: "/boards/1", token: "t", fetch, onDrawing: (drawing) => drawings.push(drawing), onError: (error) => errors.push(error), onRedirect: (address) => addresses.push(address) })
 
 test("an edit that cannot reach the server says it was not saved", async () => {
   const errors = []
@@ -41,4 +41,13 @@ test("an accepted edit clears the last error shown", async () => {
   await sending(server, errors)("/lines", "DELETE", {})
 
   assert.deepEqual(errors, [ null ])
+})
+
+test("an accepted edit whose answer gives an address sends the admin there", async () => {
+  const addresses = []
+  const server = async () => ({ ok: true, status: 200, json: async () => ({ redirect: "/billed/1" }) })
+
+  await sending(server, [], [], addresses)("/save", "POST")
+
+  assert.deepEqual(addresses, [ "/billed/1" ])
 })
