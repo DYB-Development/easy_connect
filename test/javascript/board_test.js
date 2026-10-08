@@ -37,3 +37,9 @@ test("shows an item's detail lines under its label", () => {
 
   assert.match(html, /Add the report page<\/div><div[^>]*>dyb_web<\/div><div[^>]*>Merged Oct 2<\/div>/)
 })
+
+test("links a node to its item in a new tab", () => {
+  const html = drawn([ { name: "Pull requests", items: [ { id: "PR-7", label: "Add the report page", url: "https://github.com/acme/app/pull/7" } ] } ])
+
+  assert.match(html, /<a href="https:\/\/github.com\/acme\/app\/pull\/7" target="_blank" rel="noopener noreferrer"[^>]*>Open<\/a>/)
+})
