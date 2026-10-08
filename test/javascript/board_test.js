@@ -19,3 +19,7 @@ test("draws a node showing each item's label in its group's column", () => {
 test("says a board that has not been saved is not saved yet", () => {
   assert.match(drawn([]), /<span[^>]*data-saved[^>]*>Not saved yet<\/span>/)
 })
+
+test("says when a saved board was saved", () => {
+  assert.match(drawn([], [], "2026-10-08T14:05:00Z"), /<span[^>]*data-saved[^>]*>Saved [^<]+<\/span>/)
+})

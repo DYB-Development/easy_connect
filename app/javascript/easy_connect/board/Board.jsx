@@ -12,6 +12,8 @@ const node = { border: "1px solid #d1d5db", borderRadius: 8, padding: "8px 14px"
 
 const toolbar = { display: "flex", alignItems: "center", gap: 12, padding: "0 24px" }
 
+const savedWhen = (savedAt) => savedAt ? `Saved ${new Date(savedAt).toLocaleString()}` : "Not saved yet"
+
 const refusal = { margin: "0 24px", padding: "8px 14px", borderRadius: 8, background: "#fef2f2", color: "#991b1b" }
 
 const remover = { position: "absolute", transform: "translate(-50%, -50%)", width: 22, height: 22, borderRadius: 11, border: "1px solid #d1d5db", background: "white", color: "#4b5563", cursor: "pointer", lineHeight: "18px", padding: 0 }
@@ -64,7 +66,7 @@ const Board = ({ base, token, initial }) => {
   return (
     <div ref={surface} style={surfaceSide}>
       <div style={toolbar}>
-        <span data-saved>Not saved yet</span>
+        <span data-saved>{savedWhen(drawing.saved_at)}</span>
       </div>
       {error && <p role="alert" style={refusal}>{error}</p>}
       <div style={columnsSide}>
