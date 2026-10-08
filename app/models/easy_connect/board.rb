@@ -4,6 +4,10 @@ module EasyConnect
 
     belongs_to :owner, polymorphic: true, optional: true
 
+    def saved?
+      saved_at.present?
+    end
+
     def result
       { items: items.pluck("id"), lines: [] }.to_json
     end

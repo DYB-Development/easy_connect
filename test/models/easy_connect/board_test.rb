@@ -44,4 +44,8 @@ class EasyConnect::BoardTest < ActiveSupport::TestCase
 
     assert_equal({ "columns" => board.columns, "lines" => [ { "from" => "DYB-1", "to" => "PR-7" } ] }, board.drawing)
   end
+
+  test "a new board has not been saved" do
+    assert_not EasyConnect::Board.create!(host: "billing", title: "October", groups: [ "Tickets", "Pull requests" ], items: []).saved?
+  end
 end
