@@ -3,6 +3,8 @@ require "easy_connect/host"
 require "easy_connect/engine"
 
 module EasyConnect
+  class Refused < StandardError; end
+
   class << self
     attr_writer :base_controller
 

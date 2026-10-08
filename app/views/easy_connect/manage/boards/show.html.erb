@@ -5,4 +5,4 @@
 
 <h1><%= @board.title %></h1>
 
-<%= react_ui("easy_connect/board", { columns: @board.columns }) %>
+<%= react_ui("easy_connect/board", { base: manage_board_path(@board), token: form_authenticity_token, initial: @board.drawing }) %>

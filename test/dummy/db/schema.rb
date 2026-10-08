@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_08_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_08_130000) do
   create_table "accounts", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -27,6 +27,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_120000) do
     t.json "items", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.json "lines", default: [], null: false
     t.index ["host", "owner_type", "owner_id"], name: "index_easy_connect_boards_on_host_and_owner_type_and_owner_id"
   end
 end

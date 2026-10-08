@@ -30,4 +30,18 @@ class EasyConnect::BoardTest < ActiveSupport::TestCase
       { "name" => "Pull requests", "items" => [ { "id" => "PR-7", "label" => "Add the report page" } ] }
     ], board.columns
   end
+
+  test "a new board has no lines" do
+    assert_equal [], EasyConnect::Board.create!(host: "billing", title: "October", groups: [ "Tickets", "Pull requests" ], items: []).lines
+  end
+
+  test "a board's drawing holds its columns and its lines" do
+    board = EasyConnect::Board.create!(host: "billing", title: "October", groups: [ "Tickets", "Pull requests" ], items: [
+      { "id" => "DYB-1", "label" => "Billing report", "group" => "Tickets" },
+      { "id" => "PR-7", "label" => "Add the report page", "group" => "Pull requests" }
+    ])
+    board.connect("DYB-1", "PR-7")
+
+    assert_equal({ "columns" => board.columns, "lines" => [ { "from" => "DYB-1", "to" => "PR-7" } ] }, board.drawing)
+  end
 end
