@@ -116,7 +116,7 @@ test("shows the button that removes a line in the surface and border colours", (
   assert.match(html, /^<button type="button" class="ks-panel ks-tone-muted"/)
 })
 
-test("draws the connecting lines in the app's border colour", () => {
+test("draws each connecting line in the colour of the layer around it", () => {
   const html = renderToStaticMarkup(React.createElement("svg", null, React.createElement(Line, { line: { from: "a", to: "b", path: "M 0 0 L 1 1" } })))
 
   assert.match(html, /<path [^>]*stroke="var\(--ks-color-border\)"/)
@@ -132,4 +132,8 @@ test("gives no part of the board a fixed fill or colour of its own", () => {
   ].join("")
 
   assert.doesNotMatch(html, /background|white|#[0-9a-f]{3,6}\b/i)
+})
+
+test("draws the connecting lines in a colour that follows dark mode", () => {
+  assert.match(drawn([]), /<svg class="ks-tone-muted"[^>]*>/)
 })

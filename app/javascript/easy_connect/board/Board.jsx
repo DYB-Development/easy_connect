@@ -53,7 +53,7 @@ export const Remover = ({ line, title, onRemove }) => (
 )
 
 export const Line = ({ line }) => (
-  <path data-line={`${line.from} ${line.to}`} d={line.path} stroke="var(--ks-color-border)" strokeWidth="2" fill="none" />
+  <path data-line={`${line.from} ${line.to}`} d={line.path} stroke="currentColor" strokeWidth="2" fill="none" />
 )
 
 const linesLayer = { position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", overflow: "visible" }
@@ -157,7 +157,7 @@ const Board = ({ base, token, initial }) => {
           ))}
         </div>
       )}
-      <svg style={linesLayer}>
+      <svg className="ks-tone-muted" style={linesLayer}>
         {placed.map((line) => <Line key={`${line.from} ${line.to}`} line={line} />)}
       </svg>
       {placed.map((line) => (
