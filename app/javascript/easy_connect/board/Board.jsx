@@ -46,7 +46,11 @@ export const Asking = ({ leftOut, onKeepDrawing, onSaveAnyway }) => (
 
 export const Refusal = ({ error }) => <p role="alert" className="ks-alert ks-alert-error" style={refusal}>{error}</p>
 
-const remover = { position: "absolute", transform: "translate(-50%, -50%)", width: 22, height: 22, borderRadius: 11, border: "1px solid #d1d5db", background: "white", color: "#4b5563", cursor: "pointer", lineHeight: "18px", padding: 0 }
+const remover = { position: "absolute", transform: "translate(-50%, -50%)", width: 22, height: 22, borderRadius: 11, cursor: "pointer", lineHeight: "18px", padding: 0 }
+
+export const Remover = ({ line, title, onRemove }) => (
+  <button type="button" className="ks-panel ks-tone-muted" style={{ ...remover, left: line.midX, top: line.midY }} title={title} onClick={onRemove}>×</button>
+)
 
 const linesLayer = { position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", overflow: "visible" }
 
@@ -155,9 +159,9 @@ const Board = ({ base, token, initial }) => {
         ))}
       </svg>
       {placed.map((line) => (
-        <button key={`${line.from} ${line.to}`} type="button" style={{ ...remover, left: line.midX, top: line.midY }}
-                title={`Remove the line from ${labels[line.from]} to ${labels[line.to]}`}
-                onClick={() => send("/lines", "DELETE", { from: line.from, to: line.to })}>×</button>
+        <Remover key={`${line.from} ${line.to}`} line={line}
+                 title={`Remove the line from ${labels[line.from]} to ${labels[line.to]}`}
+                 onRemove={() => send("/lines", "DELETE", { from: line.from, to: line.to })} />
       ))}
     </div>
   )

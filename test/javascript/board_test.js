@@ -2,7 +2,7 @@ import { test } from "node:test"
 import assert from "node:assert/strict"
 import React from "react"
 import { renderToStaticMarkup } from "react-dom/server"
-import Board, { Asking, Refusal } from "../../app/javascript/easy_connect/board/Board.jsx"
+import Board, { Asking, Refusal, Remover } from "../../app/javascript/easy_connect/board/Board.jsx"
 
 const drawn = (columns, lines = [], saved_at = null) => renderToStaticMarkup(React.createElement(Board, { base: "/boards/1", token: "t", initial: { columns, lines, saved_at } }))
 
@@ -108,4 +108,10 @@ test("shows an error as a danger alert", () => {
   const html = renderToStaticMarkup(React.createElement(Refusal, { error: "Both items are in the same group." }))
 
   assert.match(html, /^<p role="alert" class="ks-alert ks-alert-error"/)
+})
+
+test("shows the button that removes a line in the surface and border colours", () => {
+  const html = renderToStaticMarkup(React.createElement(Remover, { line: { midX: 10, midY: 20 }, title: "Remove the line", onRemove: () => {} }))
+
+  assert.match(html, /^<button type="button" class="ks-panel ks-tone-muted"/)
 })
