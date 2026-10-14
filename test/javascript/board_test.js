@@ -99,3 +99,7 @@ test("shows the Open link in the link colour", () => {
 
   assert.match(html, /<a [^>]*class="ks-card-link"[^>]*>Open<\/a>/)
 })
+
+test("shows the Save anyway prompt as a warning alert", () => {
+  assert.match(asked([ "Test" ]), /^<div role="alertdialog" class="ks-alert ks-alert-warning"/)
+})

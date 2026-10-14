@@ -30,12 +30,12 @@ const onTheWeb = (address) => /^https?:\/\//.test(address || "")
 
 const marker = { marginTop: 6 }
 
-const asking = { margin: "0 24px", padding: "12px 14px", borderRadius: 8, background: "#fffbeb", color: "#92400e" }
+const asking = { margin: "0 24px" }
 
 const refusal = { margin: "0 24px", padding: "8px 14px", borderRadius: 8, background: "#fef2f2", color: "#991b1b" }
 
 export const Asking = ({ leftOut, onKeepDrawing, onSaveAnyway }) => (
-  <div role="alertdialog" style={asking}>
+  <div role="alertdialog" className="ks-alert ks-alert-warning" style={asking}>
     <p>No line touches {leftOut.join(", ")}. Save anyway?</p>
     <div style={toolbar}>
       <Button type="button" variant="secondary" size="sm" onClick={onKeepDrawing}>Keep drawing</Button>
