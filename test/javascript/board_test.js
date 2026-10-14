@@ -2,7 +2,7 @@ import { test } from "node:test"
 import assert from "node:assert/strict"
 import React from "react"
 import { renderToStaticMarkup } from "react-dom/server"
-import Board, { Asking, Refusal, Remover } from "../../app/javascript/easy_connect/board/Board.jsx"
+import Board, { Asking, Line, Refusal, Remover } from "../../app/javascript/easy_connect/board/Board.jsx"
 
 const drawn = (columns, lines = [], saved_at = null) => renderToStaticMarkup(React.createElement(Board, { base: "/boards/1", token: "t", initial: { columns, lines, saved_at } }))
 
@@ -114,4 +114,10 @@ test("shows the button that removes a line in the surface and border colours", (
   const html = renderToStaticMarkup(React.createElement(Remover, { line: { midX: 10, midY: 20 }, title: "Remove the line", onRemove: () => {} }))
 
   assert.match(html, /^<button type="button" class="ks-panel ks-tone-muted"/)
+})
+
+test("draws the connecting lines in the app's border colour", () => {
+  const html = renderToStaticMarkup(React.createElement("svg", null, React.createElement(Line, { line: { from: "a", to: "b", path: "M 0 0 L 1 1" } })))
+
+  assert.match(html, /<path [^>]*stroke="var\(--ks-color-border\)"/)
 })
