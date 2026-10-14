@@ -40,7 +40,7 @@ export const Asking = ({ leftOut, onKeepDrawing, onSaveAnyway }) => (
   <div role="alertdialog" style={asking}>
     <p>No line touches {leftOut.join(", ")}. Save anyway?</p>
     <div style={toolbar}>
-      <button type="button" style={marker} onClick={onKeepDrawing}>Keep drawing</button>
+      <Button type="button" variant="secondary" size="sm" onClick={onKeepDrawing}>Keep drawing</Button>
       <Button type="button" onClick={onSaveAnyway}>Save anyway</Button>
     </div>
   </div>

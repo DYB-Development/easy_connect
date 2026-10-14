@@ -83,3 +83,7 @@ test("shows Mark done and Hide done items as secondary buttons", () => {
 
   assert.deepEqual(html.match(/class="ks-button ks-button-secondary ks-button-sm"[^>]*>[^<]+</g).map((each) => each.split(">")[1].slice(0, -1)), [ "Hide done items", "Mark done" ])
 })
+
+test("shows Keep drawing as a secondary button", () => {
+  assert.match(asked([ "Test" ]), /<button type="button" class="ks-button ks-button-secondary ks-button-sm"[^>]*>Keep drawing<\/button>/)
+})
