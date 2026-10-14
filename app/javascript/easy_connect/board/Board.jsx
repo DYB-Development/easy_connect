@@ -26,8 +26,6 @@ const named = { fontWeight: 600 }
 
 const detail = { fontSize: 13 }
 
-const opener = { fontSize: 13, color: "#2563eb" }
-
 const onTheWeb = (address) => /^https?:\/\//.test(address || "")
 
 const marker = { marginTop: 6 }
@@ -113,7 +111,7 @@ const Board = ({ base, token, initial }) => {
       {(item.details || []).map((line) => <div key={line} className="ks-tone-muted" style={detail}>{line}</div>)}
       <Button type="button" variant="secondary" size="sm" draggable={false} style={marker}
               onClick={() => send(`/items/${encodeURIComponent(item.id)}`, "PATCH", { done: !item.done })}>{item.done ? "Undo done" : "Mark done"}</Button>
-      {onTheWeb(item.url) && <a href={item.url} target="_blank" rel="noopener noreferrer" draggable={false} style={opener}>Open</a>}
+      {onTheWeb(item.url) && <a href={item.url} target="_blank" rel="noopener noreferrer" draggable={false} className="ks-card-link">Open</a>}
     </div>
   )
 

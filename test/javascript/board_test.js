@@ -93,3 +93,9 @@ test("shows an item's detail lines in the muted text colour", () => {
 
   assert.match(html, /<div class="ks-tone-muted"[^>]*>dyb_web<\/div>/)
 })
+
+test("shows the Open link in the link colour", () => {
+  const html = drawn([ { name: "Pull requests", items: [ { id: "PR-7", label: "Add the report page", url: "https://github.com/acme/app/pull/7" } ] } ])
+
+  assert.match(html, /<a [^>]*class="ks-card-link"[^>]*>Open<\/a>/)
+})
