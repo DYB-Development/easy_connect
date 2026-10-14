@@ -67,3 +67,7 @@ test("draws each item in a box with the palette's surface and border and the loo
 
   assert.match(html, /<div[^>]*class="ks-panel ks-panel-radius-md ks-panel-padding-sm"[^>]*data-item="DYB-1"[^>]*style="cursor:grab"/)
 })
+
+test("shows Save as a primary button", () => {
+  assert.match(drawn([]), /<button type="button" class="ks-button ks-button-primary ks-button-md"[^>]*>Save<\/button>/)
+})

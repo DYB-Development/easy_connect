@@ -1,4 +1,5 @@
 import React, { useLayoutEffect, useRef, useState } from "react"
+import Button from "keystone_ui-react/src/Button.jsx"
 import { createSender } from "./sender"
 import { between, downward } from "./lines"
 import { untouched } from "./untouched"
@@ -111,10 +112,10 @@ const Board = ({ base, token, initial }) => {
   return (
     <div ref={surface} style={surfaceSide}>
       <div style={toolbar}>
-        <button type="button" style={saveButton} onClick={() => {
+        <Button type="button" onClick={() => {
           const missing = untouched(drawing)
           missing.length ? setLeftOut(missing) : send("/save", "POST")
-        }}>Save</button>
+        }}>Save</Button>
         <button type="button" style={marker} onClick={() => setHidingDone(!hidingDone)}>{hidingDone ? "Show done items" : "Hide done items"}</button>
         <span data-saved>{savedWhen(drawing.saved_at)}</span>
       </div>
