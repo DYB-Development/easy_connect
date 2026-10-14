@@ -2,7 +2,7 @@ import { test } from "node:test"
 import assert from "node:assert/strict"
 import React from "react"
 import { renderToStaticMarkup } from "react-dom/server"
-import Board from "../../app/javascript/easy_connect/board/Board.jsx"
+import Board, { Asking } from "../../app/javascript/easy_connect/board/Board.jsx"
 
 const drawn = (columns, lines = [], saved_at = null) => renderToStaticMarkup(React.createElement(Board, { base: "/boards/1", token: "t", initial: { columns, lines, saved_at } }))
 
@@ -70,4 +70,10 @@ test("draws each item in a box with the palette's surface and border and the loo
 
 test("shows Save as a primary button", () => {
   assert.match(drawn([]), /<button type="button" class="ks-button ks-button-primary ks-button-md"[^>]*>Save<\/button>/)
+})
+
+const asked = (leftOut) => renderToStaticMarkup(React.createElement(Asking, { leftOut, onKeepDrawing: () => {}, onSaveAnyway: () => {} }))
+
+test("shows Save anyway as a primary button", () => {
+  assert.match(asked([ "Test" ]), /<button type="button" class="ks-button ks-button-primary ks-button-md"[^>]*>Save anyway<\/button>/)
 })

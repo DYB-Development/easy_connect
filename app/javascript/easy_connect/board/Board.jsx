@@ -20,8 +20,6 @@ const nodeLook = "ks-panel ks-panel-radius-md ks-panel-padding-sm"
 
 const toolbar = { display: "flex", alignItems: "center", gap: 12, padding: "0 24px" }
 
-const saveButton = { padding: "8px 16px", borderRadius: 8, border: 0, background: "#2563eb", color: "white", fontWeight: 600, cursor: "pointer" }
-
 const savedWhen = (savedAt) => savedAt ? `Saved ${new Date(savedAt).toLocaleString()}` : "Not saved yet"
 
 const named = { fontWeight: 600 }
@@ -37,6 +35,16 @@ const marker = { marginTop: 6, fontSize: 12, padding: "2px 8px", borderRadius: 6
 const asking = { margin: "0 24px", padding: "12px 14px", borderRadius: 8, background: "#fffbeb", color: "#92400e" }
 
 const refusal = { margin: "0 24px", padding: "8px 14px", borderRadius: 8, background: "#fef2f2", color: "#991b1b" }
+
+export const Asking = ({ leftOut, onKeepDrawing, onSaveAnyway }) => (
+  <div role="alertdialog" style={asking}>
+    <p>No line touches {leftOut.join(", ")}. Save anyway?</p>
+    <div style={toolbar}>
+      <button type="button" style={marker} onClick={onKeepDrawing}>Keep drawing</button>
+      <Button type="button" onClick={onSaveAnyway}>Save anyway</Button>
+    </div>
+  </div>
+)
 
 const remover = { position: "absolute", transform: "translate(-50%, -50%)", width: 22, height: 22, borderRadius: 11, border: "1px solid #d1d5db", background: "white", color: "#4b5563", cursor: "pointer", lineHeight: "18px", padding: 0 }
 
@@ -120,13 +128,9 @@ const Board = ({ base, token, initial }) => {
         <span data-saved>{savedWhen(drawing.saved_at)}</span>
       </div>
       {leftOut.length > 0 && (
-        <div role="alertdialog" style={asking}>
-          <p>No line touches {leftOut.join(", ")}. Save anyway?</p>
-          <div style={toolbar}>
-            <button type="button" style={marker} onClick={() => setLeftOut([])}>Keep drawing</button>
-            <button type="button" style={saveButton} onClick={() => { setLeftOut([]); send("/save", "POST") }}>Save anyway</button>
-          </div>
-        </div>
+        <Asking leftOut={leftOut}
+                onKeepDrawing={() => setLeftOut([])}
+                onSaveAnyway={() => { setLeftOut([]); send("/save", "POST") }} />
       )}
       {error && <p role="alert" style={refusal}>{error}</p>}
       {drawing.rows ? (
