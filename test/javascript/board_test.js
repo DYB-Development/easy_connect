@@ -119,7 +119,7 @@ test("shows the button that removes a line in the surface and border colours", (
 test("draws each connecting line in the colour of the layer around it", () => {
   const html = renderToStaticMarkup(React.createElement("svg", null, React.createElement(Line, { line: { from: "a", to: "b", path: "M 0 0 L 1 1" } })))
 
-  assert.match(html, /<path [^>]*stroke="var\(--ks-color-border\)"/)
+  assert.match(html, /<path [^>]*stroke="currentColor"/)
 })
 
 test("gives no part of the board a fixed fill or colour of its own", () => {
