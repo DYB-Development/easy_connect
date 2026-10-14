@@ -121,3 +121,15 @@ test("draws the connecting lines in the app's border colour", () => {
 
   assert.match(html, /<path [^>]*stroke="var\(--ks-color-border\)"/)
 })
+
+test("gives no part of the board a fixed fill or colour of its own", () => {
+  const html = [
+    drawn([ { name: "Tickets", items: [ { id: "DYB-1", label: "Billing report", details: [ "dyb_web" ], url: "https://example.com", done: true } ] } ]),
+    asked([ "Test" ]),
+    renderToStaticMarkup(React.createElement(Refusal, { error: "Refused" })),
+    renderToStaticMarkup(React.createElement(Remover, { line: { midX: 1, midY: 2 }, title: "Remove", onRemove: () => {} })),
+    renderToStaticMarkup(React.createElement("svg", null, React.createElement(Line, { line: { from: "a", to: "b", path: "M 0 0" } })))
+  ].join("")
+
+  assert.doesNotMatch(html, /background|white|#[0-9a-f]{3,6}\b/i)
+})
