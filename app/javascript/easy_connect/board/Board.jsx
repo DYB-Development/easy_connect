@@ -24,7 +24,7 @@ const savedWhen = (savedAt) => savedAt ? `Saved ${new Date(savedAt).toLocaleStri
 
 const named = { fontWeight: 600 }
 
-const detail = { fontSize: 13, color: "#6b7280" }
+const detail = { fontSize: 13 }
 
 const opener = { fontSize: 13, color: "#2563eb" }
 
@@ -110,7 +110,7 @@ const Board = ({ base, token, initial }) => {
          onDrop={(event) => dropped(event, item.id)}
          style={item.done ? { ...node, opacity: 0.55 } : node}>
       <div style={named}>{item.label}</div>
-      {(item.details || []).map((line) => <div key={line} style={detail}>{line}</div>)}
+      {(item.details || []).map((line) => <div key={line} className="ks-tone-muted" style={detail}>{line}</div>)}
       <Button type="button" variant="secondary" size="sm" draggable={false} style={marker}
               onClick={() => send(`/items/${encodeURIComponent(item.id)}`, "PATCH", { done: !item.done })}>{item.done ? "Undo done" : "Mark done"}</Button>
       {onTheWeb(item.url) && <a href={item.url} target="_blank" rel="noopener noreferrer" draggable={false} style={opener}>Open</a>}

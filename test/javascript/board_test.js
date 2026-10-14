@@ -87,3 +87,9 @@ test("shows Mark done and Hide done items as secondary buttons", () => {
 test("shows Keep drawing as a secondary button", () => {
   assert.match(asked([ "Test" ]), /<button type="button" class="ks-button ks-button-secondary ks-button-sm"[^>]*>Keep drawing<\/button>/)
 })
+
+test("shows an item's detail lines in the muted text colour", () => {
+  const html = drawn([ { name: "Pull requests", items: [ { id: "PR-7", label: "Add the report page", details: [ "dyb_web" ] } ] } ])
+
+  assert.match(html, /<div class="ks-tone-muted"[^>]*>dyb_web<\/div>/)
+})
