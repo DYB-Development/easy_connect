@@ -2,7 +2,7 @@ import { test } from "node:test"
 import assert from "node:assert/strict"
 import React from "react"
 import { renderToStaticMarkup } from "react-dom/server"
-import Board, { Asking } from "../../app/javascript/easy_connect/board/Board.jsx"
+import Board, { Asking, Refusal } from "../../app/javascript/easy_connect/board/Board.jsx"
 
 const drawn = (columns, lines = [], saved_at = null) => renderToStaticMarkup(React.createElement(Board, { base: "/boards/1", token: "t", initial: { columns, lines, saved_at } }))
 
@@ -102,4 +102,10 @@ test("shows the Open link in the link colour", () => {
 
 test("shows the Save anyway prompt as a warning alert", () => {
   assert.match(asked([ "Test" ]), /^<div role="alertdialog" class="ks-alert ks-alert-warning"/)
+})
+
+test("shows an error as a danger alert", () => {
+  const html = renderToStaticMarkup(React.createElement(Refusal, { error: "Both items are in the same group." }))
+
+  assert.match(html, /^<p role="alert" class="ks-alert ks-alert-error"/)
 })

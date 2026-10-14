@@ -32,7 +32,7 @@ const marker = { marginTop: 6 }
 
 const asking = { margin: "0 24px" }
 
-const refusal = { margin: "0 24px", padding: "8px 14px", borderRadius: 8, background: "#fef2f2", color: "#991b1b" }
+const refusal = { margin: "0 24px" }
 
 export const Asking = ({ leftOut, onKeepDrawing, onSaveAnyway }) => (
   <div role="alertdialog" className="ks-alert ks-alert-warning" style={asking}>
@@ -43,6 +43,8 @@ export const Asking = ({ leftOut, onKeepDrawing, onSaveAnyway }) => (
     </div>
   </div>
 )
+
+export const Refusal = ({ error }) => <p role="alert" className="ks-alert ks-alert-error" style={refusal}>{error}</p>
 
 const remover = { position: "absolute", transform: "translate(-50%, -50%)", width: 22, height: 22, borderRadius: 11, border: "1px solid #d1d5db", background: "white", color: "#4b5563", cursor: "pointer", lineHeight: "18px", padding: 0 }
 
@@ -130,7 +132,7 @@ const Board = ({ base, token, initial }) => {
                 onKeepDrawing={() => setLeftOut([])}
                 onSaveAnyway={() => { setLeftOut([]); send("/save", "POST") }} />
       )}
-      {error && <p role="alert" style={refusal}>{error}</p>}
+      {error && <Refusal error={error} />}
       {drawing.rows ? (
         <div style={rowsSide}>
           {drawing.rows.map((held, index) => (
