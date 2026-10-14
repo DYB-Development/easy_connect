@@ -2,7 +2,7 @@ import { test } from "node:test"
 import assert from "node:assert/strict"
 import React from "react"
 import { renderToStaticMarkup } from "react-dom/server"
-import Board from "../../app/javascript/easy_connect/board/Board.jsx"
+import Board, { Asking, Line, Refusal, Remover } from "../../app/javascript/easy_connect/board/Board.jsx"
 
 const drawn = (columns, lines = [], saved_at = null) => renderToStaticMarkup(React.createElement(Board, { base: "/boards/1", token: "t", initial: { columns, lines, saved_at } }))
 
@@ -60,4 +60,80 @@ test("offers to undo the mark on a done item and shows it as done", () => {
   const html = drawn([ { name: "Tickets", items: [ { id: "DYB-1", label: "Billing report", done: true } ] } ])
 
   assert.match(html, /data-item="DYB-1"[^>]*data-done="true"[^>]*>.*<button[^>]*>Undo done<\/button>/)
+})
+
+test("draws each item in a box with the palette's surface and border and the look's corners", () => {
+  const html = drawn([ { name: "Tickets", items: [ { id: "DYB-1", label: "Billing report" } ] } ])
+
+  assert.match(html, /<div[^>]*class="ks-panel ks-panel-radius-md ks-panel-padding-sm"[^>]*data-item="DYB-1"[^>]*style="cursor:grab"/)
+})
+
+test("shows Save as a primary button", () => {
+  assert.match(drawn([]), /<button type="button" class="ks-button ks-button-primary ks-button-md"[^>]*>Save<\/button>/)
+})
+
+const asked = (leftOut) => renderToStaticMarkup(React.createElement(Asking, { leftOut, onKeepDrawing: () => {}, onSaveAnyway: () => {} }))
+
+test("shows Save anyway as a primary button", () => {
+  assert.match(asked([ "Test" ]), /<button type="button" class="ks-button ks-button-primary ks-button-md"[^>]*>Save anyway<\/button>/)
+})
+
+test("shows Mark done and Hide done items as secondary buttons", () => {
+  const html = drawn([ { name: "Tickets", items: [ { id: "DYB-1", label: "Billing report" } ] } ])
+
+  assert.deepEqual(html.match(/class="ks-button ks-button-secondary ks-button-sm"[^>]*>[^<]+</g).map((each) => each.split(">")[1].slice(0, -1)), [ "Hide done items", "Mark done" ])
+})
+
+test("shows Keep drawing as a secondary button", () => {
+  assert.match(asked([ "Test" ]), /<button type="button" class="ks-button ks-button-secondary ks-button-sm"[^>]*>Keep drawing<\/button>/)
+})
+
+test("shows an item's detail lines in the muted text colour", () => {
+  const html = drawn([ { name: "Pull requests", items: [ { id: "PR-7", label: "Add the report page", details: [ "dyb_web" ] } ] } ])
+
+  assert.match(html, /<div class="ks-tone-muted"[^>]*>dyb_web<\/div>/)
+})
+
+test("shows the Open link in the link colour", () => {
+  const html = drawn([ { name: "Pull requests", items: [ { id: "PR-7", label: "Add the report page", url: "https://github.com/acme/app/pull/7" } ] } ])
+
+  assert.match(html, /<a [^>]*class="ks-card-link"[^>]*>Open<\/a>/)
+})
+
+test("shows the Save anyway prompt as a warning alert", () => {
+  assert.match(asked([ "Test" ]), /^<div role="alertdialog" class="ks-alert ks-alert-warning"/)
+})
+
+test("shows an error as a danger alert", () => {
+  const html = renderToStaticMarkup(React.createElement(Refusal, { error: "Both items are in the same group." }))
+
+  assert.match(html, /^<p role="alert" class="ks-alert ks-alert-error"/)
+})
+
+test("shows the button that removes a line in the surface and border colours", () => {
+  const html = renderToStaticMarkup(React.createElement(Remover, { line: { midX: 10, midY: 20 }, title: "Remove the line", onRemove: () => {} }))
+
+  assert.match(html, /^<button type="button" class="ks-panel ks-tone-muted"/)
+})
+
+test("draws each connecting line in the colour of the layer around it", () => {
+  const html = renderToStaticMarkup(React.createElement("svg", null, React.createElement(Line, { line: { from: "a", to: "b", path: "M 0 0 L 1 1" } })))
+
+  assert.match(html, /<path [^>]*stroke="currentColor"/)
+})
+
+test("gives no part of the board a fixed fill or colour of its own", () => {
+  const html = [
+    drawn([ { name: "Tickets", items: [ { id: "DYB-1", label: "Billing report", details: [ "dyb_web" ], url: "https://example.com", done: true } ] } ]),
+    asked([ "Test" ]),
+    renderToStaticMarkup(React.createElement(Refusal, { error: "Refused" })),
+    renderToStaticMarkup(React.createElement(Remover, { line: { midX: 1, midY: 2 }, title: "Remove", onRemove: () => {} })),
+    renderToStaticMarkup(React.createElement("svg", null, React.createElement(Line, { line: { from: "a", to: "b", path: "M 0 0" } })))
+  ].join("")
+
+  assert.doesNotMatch(html, /background|white|#[0-9a-f]{3,6}\b/i)
+})
+
+test("draws the connecting lines in a colour that follows dark mode", () => {
+  assert.match(drawn([]), /<svg class="ks-tone-muted"[^>]*>/)
 })
