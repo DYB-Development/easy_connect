@@ -61,3 +61,9 @@ test("offers to undo the mark on a done item and shows it as done", () => {
 
   assert.match(html, /data-item="DYB-1"[^>]*data-done="true"[^>]*>.*<button[^>]*>Undo done<\/button>/)
 })
+
+test("draws each item in a box with the palette's surface and border and the look's corners", () => {
+  const html = drawn([ { name: "Tickets", items: [ { id: "DYB-1", label: "Billing report" } ] } ])
+
+  assert.match(html, /<div[^>]*class="ks-panel ks-panel-radius-md ks-panel-padding-sm"[^>]*data-item="DYB-1"[^>]*style="cursor:grab"/)
+})

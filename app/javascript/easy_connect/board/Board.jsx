@@ -13,7 +13,9 @@ const rowsSide = { display: "flex", flexDirection: "column", gap: 72, padding: 2
 
 const row = { display: "flex", gap: 24, alignItems: "flex-start" }
 
-const node = { border: "1px solid #d1d5db", borderRadius: 8, padding: "8px 14px", background: "white", cursor: "grab" }
+const node = { cursor: "grab" }
+
+const nodeLook = "ks-panel ks-panel-radius-md ks-panel-padding-sm"
 
 const toolbar = { display: "flex", alignItems: "center", gap: 12, padding: "0 24px" }
 
@@ -89,6 +91,7 @@ const Board = ({ base, token, initial }) => {
 
   const drawNode = (item) => (
     <div key={item.id}
+         className={nodeLook}
          ref={(element) => { nodes.current[item.id] = element }}
          data-item={item.id}
          data-done={item.done ? "true" : undefined}
