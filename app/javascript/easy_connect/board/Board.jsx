@@ -30,7 +30,7 @@ const opener = { fontSize: 13, color: "#2563eb" }
 
 const onTheWeb = (address) => /^https?:\/\//.test(address || "")
 
-const marker = { marginTop: 6, fontSize: 12, padding: "2px 8px", borderRadius: 6, border: "1px solid #d1d5db", background: "white", cursor: "pointer" }
+const marker = { marginTop: 6 }
 
 const asking = { margin: "0 24px", padding: "12px 14px", borderRadius: 8, background: "#fffbeb", color: "#92400e" }
 
@@ -111,8 +111,8 @@ const Board = ({ base, token, initial }) => {
          style={item.done ? { ...node, opacity: 0.55 } : node}>
       <div style={named}>{item.label}</div>
       {(item.details || []).map((line) => <div key={line} style={detail}>{line}</div>)}
-      <button type="button" draggable={false} style={marker}
-              onClick={() => send(`/items/${encodeURIComponent(item.id)}`, "PATCH", { done: !item.done })}>{item.done ? "Undo done" : "Mark done"}</button>
+      <Button type="button" variant="secondary" size="sm" draggable={false} style={marker}
+              onClick={() => send(`/items/${encodeURIComponent(item.id)}`, "PATCH", { done: !item.done })}>{item.done ? "Undo done" : "Mark done"}</Button>
       {onTheWeb(item.url) && <a href={item.url} target="_blank" rel="noopener noreferrer" draggable={false} style={opener}>Open</a>}
     </div>
   )
@@ -124,7 +124,7 @@ const Board = ({ base, token, initial }) => {
           const missing = untouched(drawing)
           missing.length ? setLeftOut(missing) : send("/save", "POST")
         }}>Save</Button>
-        <button type="button" style={marker} onClick={() => setHidingDone(!hidingDone)}>{hidingDone ? "Show done items" : "Hide done items"}</button>
+        <Button type="button" variant="secondary" size="sm" onClick={() => setHidingDone(!hidingDone)}>{hidingDone ? "Show done items" : "Hide done items"}</Button>
         <span data-saved>{savedWhen(drawing.saved_at)}</span>
       </div>
       {leftOut.length > 0 && (

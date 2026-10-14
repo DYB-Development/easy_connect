@@ -77,3 +77,9 @@ const asked = (leftOut) => renderToStaticMarkup(React.createElement(Asking, { le
 test("shows Save anyway as a primary button", () => {
   assert.match(asked([ "Test" ]), /<button type="button" class="ks-button ks-button-primary ks-button-md"[^>]*>Save anyway<\/button>/)
 })
+
+test("shows Mark done and Hide done items as secondary buttons", () => {
+  const html = drawn([ { name: "Tickets", items: [ { id: "DYB-1", label: "Billing report" } ] } ])
+
+  assert.deepEqual(html.match(/class="ks-button ks-button-secondary ks-button-sm"[^>]*>[^<]+</g).map((each) => each.split(">")[1].slice(0, -1)), [ "Hide done items", "Mark done" ])
+})
